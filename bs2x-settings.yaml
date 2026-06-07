@@ -1,0 +1,7 @@
+# WS63 RISC-V target settings for svd2rust
+# ISA: rv32i2p1_m2p0_f2p2_c2p0_zicsr2p0 (RV32IMFC_Zicsr)
+# Custom interrupt controller (SYS_CTL1), no standard CLINT/PLIC
+# Single hart, 240MHz max, vector/direct interrupt modes
+# Reference: ws63-guide/source/ch2_system.md
+riscv_config:
+  base_isa: rv32i

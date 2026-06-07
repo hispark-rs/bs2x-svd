@@ -1,0 +1,9 @@
+[project]
+name = "ws63-svd"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "xmlschema>=4.3.1",
+]
