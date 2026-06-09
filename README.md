@@ -37,8 +37,20 @@ git -C .. diff src/lib.rs   # 审查 diff 后再提交
 
 > 该流水线幂等：同一 SVD 重跑产出字节一致的 lib.rs。`postprocess` 计数（5/1/1/6）与 ws63-svd 一致。
 
-## 与 WS63 的关系 / 后续
+## 两个真值源
 
-当前 `BS2X.svd` 覆盖 BS21 已建模的共享 IP 外设（M1：GPIO+UART 已在 `-M bs21` QEMU 跑通）。
-BS21 专属外设（USB / NFC / PDM / QDEC / KEYSCAN / 13-bit GADC）随连接性推后，逐步补进本 SVD。
-寄存器块定义溯源于 `WS63.svd`（同版本 IP）；地址/实例/IRQ 溯源于 `/root/fbb_bs2x`（`platform_core.h` / `chip_core_irq.h`）。
+`BS2X.svd` 由 `tools/build_bs2x_svd.py` 从**两个源**整理（该工具随仓提供作溯源）：
+
+1. **`WS63.svd`** —— 共享版本化 IP 外设（UART/TIMER/GPIO/I2C/SPI/PWM/DMA/RTC/TRNG/WDT/TCXO/GLB_CTL_M）。
+   BS21 同硅片，`<registers>` 原样复用，只改基址 + 实例 + 中断。
+2. **`fbb_bs2x` SDK HAL 头文件** —— **BS2X 专属外设**（WS63 无）：
+   - **GADC**（13-bit ADC，v153 @`0x5703_6000`）、**KEYSCAN**（v150 @`0x5208_D000`）、
+     **PDM**（v150 @`0x5208_E000`）、**QDEC**（v150 @`0x5200_0200`）——
+     由 `tools/derive_bs2x_specific.py` 解析 `hal_<p>_v<NN>_regs_def.h` 的寄存器块 + 位域生成。
+
+地址/实例/IRQ 溯源于 `/root/fbb_bs2x`（`platform_core.h` / `chip_core_irq.h` / 各 HAL 头）。
+
+## 仍推后
+
+**USB / NFC**（IRQ 89 / 69）在 SDK 的 HAL 树里没有简单寄存器块头（属复杂子系统），暂作 GLB_CTL_M 上的中断保留，
+随连接性补进；GLB_CTL_A/D、PMU1/PMU2_CMU、ULP_AON、FUSE 等电源/时钟控制块同理逐步补全。
