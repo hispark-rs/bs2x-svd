@@ -28,15 +28,32 @@ import xml.etree.ElementTree as ET
 RESERVED = re.compile(r"^reser?ve")  # matches reserved / reseved (SDK typo)
 
 
+def _norm(s: str) -> str:
+    """Normalize a register/union name for fuzzy matching: lowercase, drop a
+    trailing `_data`, strip underscores. Bridges the SDK's inconsistent naming
+    (member `cfg_gadc_data_0` vs union `cfg_gadc_data0`; `cfg_clk_div_1` vs
+    `cfg_clk_div1`)."""
+    s = s.lower()
+    if s.endswith("_data"):
+        s = s[:-5]
+    return s.replace("_", "")
+
+
 def match_union(unions: dict, member: str):
     """Find the bitfields for a block member. Union names vary by peripheral:
-    `<member>` (QDEC), `<member>_data` (KEYSCAN), `<prefix>_<member>_data` (PDM)."""
+    `<member>` (QDEC), `<member>_data` (KEYSCAN), `<prefix>_<member>_data` (PDM),
+    or a digit-glued variant (GADC `cfg_gadc_data0`)."""
     for k in (member, member + "_data"):
         if k in unions:
             return unions[k]
     pat = re.compile(r"(?:^|_)" + re.escape(member) + r"(?:_data)?$")
     cands = [k for k in unions if pat.search(k)]
-    return unions[min(cands, key=len)] if cands else None
+    if cands:
+        return unions[min(cands, key=len)]
+    # Fuzzy: unique normalized match (recovers GADC's digit-glued union names).
+    nm = _norm(member)
+    ncands = [k for k in unions if _norm(k) == nm]
+    return unions[ncands[0]] if len(ncands) == 1 else None
 
 
 def parse_unions(src: str) -> dict:
@@ -123,11 +140,43 @@ def build_peripheral(header_path, name, base, irqs, description):
     return p
 
 
+def _usb_split(macro: str, reg_names) -> tuple | None:
+    """Split a flat field macro `<REG>_<FIELD>` into (reg, field) by the LONGEST
+    register-name prefix (register names from the DOTG_ offset defines)."""
+    for r in reg_names:  # reg_names pre-sorted longest-first
+        if macro == r or macro.startswith(r + "_"):
+            field = macro[len(r) + 1:]
+            return (r, field) if field else None
+    return None
+
+
+def parse_usb_fields(src: str, reg_names) -> dict:
+    """reg -> [(field, bitOffset, bitWidth)] from the flat DWC OTG field macros:
+    single-bit `<REG>_<FIELD> ((1)<<(N))` and multi-bit `<REG>_<FIELD>_MASK 0x..`
+    + `<REG>_<FIELD>_SHIFT N` pairs (width = popcount of the shifted mask)."""
+    fields = {}  # reg -> {field: (bit, width)}
+    for m in re.finditer(r"^#define\s+([A-Z][A-Z0-9_]+)\s+\(*\(?1U?\)?\s*<<\s*\(?(\d+)\)?", src, re.M):
+        rf = _usb_split(m.group(1), reg_names)
+        if rf:
+            fields.setdefault(rf[0], {}).setdefault(rf[1], (int(m.group(2)), 1))
+    masks = {m.group(1): int(m.group(2), 16)
+             for m in re.finditer(r"^#define\s+([A-Z][A-Z0-9_]+)_MASK\s+0x([0-9A-Fa-f]+)", src, re.M)}
+    shifts = {m.group(1): int(m.group(2))
+              for m in re.finditer(r"^#define\s+([A-Z][A-Z0-9_]+)_SHIFT\s+(\d+)", src, re.M)}
+    for base, mask in masks.items():
+        shift = shifts.get(base, 0)
+        width = bin(mask >> shift).count("1") if mask else 1
+        rf = _usb_split(base, reg_names)
+        if rf and width:
+            fields.setdefault(rf[0], {})[rf[1]] = (shift, width)  # mask wins over single-bit
+    return fields
+
+
 def build_usb(header_path, base, irqs):
-    """USB 2.0 OTG (Synopsys DWC OTG). Unlike the HAL headers, dwc_otgreg.h uses
-    `#define DOTG_<REG> 0xNNNN` offset defines (no struct/union, no bitfield
-    breakdown in-header), so we emit register-level (fieldless) coverage of the
-    named registers, deduped by offset (read/pop host/device variants share one)."""
+    """USB 2.0 OTG (Synopsys DWC OTG). dwc_otgreg.h uses `#define DOTG_<REG>
+    0xNNNN` offsets + flat `<REG>_<FIELD>` mask macros (no struct/union). We emit
+    the named registers (deduped by offset) WITH their bitfields parsed from the
+    flat macros."""
     src = open(header_path).read()
     regs, seen = [], set()
     for m in re.finditer(r"^#define\s+DOTG_([A-Z0-9]+)\s+0x([0-9A-Fa-f]+)\b", src, re.M):
@@ -136,6 +185,9 @@ def build_usb(header_path, base, irqs):
             continue
         seen.add(off)
         regs.append((name, off))
+    reg_names = sorted({n for n, _ in regs}, key=len, reverse=True)
+    fields = parse_usb_fields(src, reg_names)
+
     p = ET.Element("peripheral")
     ET.SubElement(p, "name").text = "USB"
     ET.SubElement(p, "description").text = \
@@ -158,6 +210,19 @@ def build_usb(header_path, base, irqs):
         ET.SubElement(r, "description").text = f"DOTG_{name}"
         ET.SubElement(r, "addressOffset").text = f"0x{off:X}"
         ET.SubElement(r, "size").text = "0x20"
+        rf = fields.get(name)
+        if rf:
+            fel = ET.SubElement(r, "fields")
+            # Sort by bit so SVD fields are ordered; drop overlaps (keep first).
+            used = []
+            for fname, (bit, width) in sorted(rf.items(), key=lambda kv: kv[1][0]):
+                if any(bit < ub + uw and ub < bit + width for ub, uw in used):
+                    continue  # overlapping field (e.g. a flag inside a mask) — skip
+                used.append((bit, width))
+                f = ET.SubElement(fel, "field")
+                ET.SubElement(f, "name").text = fname
+                ET.SubElement(f, "bitOffset").text = str(bit)
+                ET.SubElement(f, "bitWidth").text = str(width)
     return p
 
 

@@ -48,10 +48,15 @@ git -C .. diff src/lib.rs   # 审查 diff 后再提交
      **PDM**（v150 @`0x5208_E000`）、**QDEC**（v150 @`0x5200_0200`）——
      由 `tools/derive_bs2x_specific.py` 解析 `hal_<p>_v<NN>_regs_def.h` 的寄存器块 + 位域生成。
    - **USB**（USB 2.0 OTG，Synopsys DWC OTG @`0x5800_0000`）—— 解析 `dwc_otgreg.h` 的
-     `#define DOTG_<REG> 0xNNNN` 偏移定义，生成 49 个寄存器（按偏移去重）。该头只有偏移、无位域分解，
-     故 USB 为**寄存器级**（无 field）覆盖。
+     `#define DOTG_<REG> 0xNNNN` 偏移定义（49 寄存器，按偏移去重）**+ 位域**:扁平的
+     `<REG>_<FIELD> ((1)<<(N))` 单比特宏与 `<REG>_<FIELD>_MASK`/`_SHIFT` 多比特对(宽度=掩码移位后的 popcount)
+     →**269 个具名位域**。
 
 地址/实例/IRQ 溯源于 `/root/fbb_bs2x`（`platform_core.h` / `chip_core_irq.h` / 各 HAL 头）。
+
+> **GADC 已知缺口**:GADC 的寄存器分 5 个块——已建模数字主块 `adc_regs`(161 寄存器 + 32 位域);
+> 模拟前端 `adc_ana_regs`(AFE trim/校准 @`0x5703_6300`+)、`adc_pmu_regs`、`adc_diag_regs0/1`
+> 在独立 base/offset 上,尚未建模(它们多为校准/诊断配置,非应用主路径),随后补。
 
 ## 仍推后
 

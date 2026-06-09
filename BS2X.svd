@@ -5448,6 +5448,18 @@
           <description>cfg_clk_div_1</description>
           <addressOffset>0x10</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>ana_div_th</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>12</bitWidth>
+            </field>
+            <field>
+              <name>prechg_div_th</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>12</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>CFG_MANUAL_CLK_0</name>
@@ -5538,12 +5550,41 @@
           <description>cfg_gadc_data_0</description>
           <addressOffset>0x5C</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>data_num</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>10</bitWidth>
+            </field>
+            <field>
+              <name>wait_num</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>CFG_GADC_DATA_1</name>
           <description>cfg_gadc_data_1</description>
           <addressOffset>0x60</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>osr_len</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>osr_sel</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>osr_wait_num</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>RPT_GADC_DATA_0</name>
@@ -5580,6 +5621,18 @@
           <description>cfg_gadc_data_4</description>
           <addressOffset>0x78</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>adc_cdac_fc_scale_div</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>9</bitWidth>
+            </field>
+            <field>
+              <name>adc_cdac_scale_div_sel</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>RPT_GADC_DATA_4</name>
@@ -7536,6 +7589,68 @@
           <description>DOTG_GOTGCTL</description>
           <addressOffset>0x0</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>SESREQSCS</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SESREQ</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SESENDDET</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>HSTNEGSCS</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>HNPREQ</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>HSTSETHNPEN</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DEVHNPEN</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>CONIDSTS</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DBNCTIME</name>
+              <bitOffset>17</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ASESVLD</name>
+              <bitOffset>18</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>BSESVLD</name>
+              <bitOffset>19</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>CHIRP_ON</name>
+              <bitOffset>27</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GOTGINT</name>
@@ -7548,36 +7663,558 @@
           <description>DOTG_GAHBCFG</description>
           <addressOffset>0x8</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>GLBLINTRMSK</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>HBSTLEN</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>DMAEN</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>NPTXFEMPLVL</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PTXFEMPLVL</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GUSBCFG</name>
           <description>DOTG_GUSBCFG</description>
           <addressOffset>0xC</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>TOUTCAL</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>PHYIF</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ULPI_UTMI_SEL</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>FSINTF</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PHYSEL</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DDRSEL</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SRPCAP</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>HNPCAP</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>USBTRDTIM</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>PHYLPWRCLKSEL</name>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OTGI2CSEL</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ULPIFSLS</name>
+              <bitOffset>17</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ULPIAUTORES</name>
+              <bitOffset>18</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ULPICLKSUSM</name>
+              <bitOffset>19</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ULPIEXTVBUSDRV</name>
+              <bitOffset>20</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ULPIEXTVBUSINDICATOR</name>
+              <bitOffset>21</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TERMSELDLPULSE</name>
+              <bitOffset>22</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IC_USB_CAP</name>
+              <bitOffset>26</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>NO_PULLUP</name>
+              <bitOffset>27</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>FORCEHOSTMODE</name>
+              <bitOffset>29</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>FORCEDEVMODE</name>
+              <bitOffset>30</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>CORRUPTTXPACKET</name>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GRSTCTL</name>
           <description>DOTG_GRSTCTL</description>
           <addressOffset>0x10</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>CSFTRST</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>HSFTRST</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>FRMCNTRRST</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>INTKNQFLSH</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RXFFLSH</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TXFFLSH</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TXFNUM</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>5</bitWidth>
+            </field>
+            <field>
+              <name>DMAREQ</name>
+              <bitOffset>30</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>AHBIDLE</name>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GINTSTS</name>
           <description>DOTG_GINTSTS</description>
           <addressOffset>0x14</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>CURMOD</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>MODEMIS</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OTGINT</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SOF</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RXFLVL</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>NPTXFEMP</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>GINNAKEFF</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>GOUTNAKEFF</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ULPICKINT</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>I2CINT</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ERLYSUSP</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>USBSUSP</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>USBRST</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENUMDONE</name>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ISOOUTDROP</name>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EOPF</name>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RESTORE_DONE</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EPMIS</name>
+              <bitOffset>17</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IEPINT</name>
+              <bitOffset>18</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OEPINT</name>
+              <bitOffset>19</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>INCOMPISOIN</name>
+              <bitOffset>20</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>INCOMPLP</name>
+              <bitOffset>21</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>FETSUSP</name>
+              <bitOffset>22</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RESETDET</name>
+              <bitOffset>23</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PRTINT</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>HCHINT</name>
+              <bitOffset>25</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PTXFEMP</name>
+              <bitOffset>26</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>LPM</name>
+              <bitOffset>27</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>CONIDSTSCHNG</name>
+              <bitOffset>28</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DISCONNINT</name>
+              <bitOffset>29</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SESSREQINT</name>
+              <bitOffset>30</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>WKUPINT</name>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GINTMSK</name>
           <description>DOTG_GINTMSK</description>
           <addressOffset>0x18</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>CURMODMSK</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>MODEMISMSK</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OTGINTMSK</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SOFMSK</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RXFLVLMSK</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>NPTXFEMPMSK</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>GINNAKEFFMSK</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>GOUTNAKEFFMSK</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ULPICKINTMSK</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>I2CINTMSK</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ERLYSUSPMSK</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>USBSUSPMSK</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>USBRSTMSK</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENUMDONEMSK</name>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ISOOUTDROPMSK</name>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EOPFMSK</name>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EPMISMSK</name>
+              <bitOffset>17</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IEPINTMSK</name>
+              <bitOffset>18</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OEPINTMSK</name>
+              <bitOffset>19</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>INCOMPISOINMSK</name>
+              <bitOffset>20</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>INCOMPLPMSK</name>
+              <bitOffset>21</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>FETSUSPMSK</name>
+              <bitOffset>22</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PRTINTMSK</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>HCHINTMSK</name>
+              <bitOffset>25</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PTXFEMPMSK</name>
+              <bitOffset>26</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>CONIDSTSCHNGMSK</name>
+              <bitOffset>28</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DISCONNINTMSK</name>
+              <bitOffset>29</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SESSREQINTMSK</name>
+              <bitOffset>30</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>WKUPINTMSK</name>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GRXSTSRD</name>
           <description>DOTG_GRXSTSRD</description>
           <addressOffset>0x1C</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>CHNUM</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>BCNT</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>11</bitWidth>
+            </field>
+            <field>
+              <name>DPID_DATA2</name>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>GLOB_OUT_NAK</name>
+              <bitOffset>17</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>FN</name>
+              <bitOffset>21</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GRXSTSPD</name>
@@ -7590,36 +8227,173 @@
           <description>DOTG_GRXFSIZ</description>
           <addressOffset>0x24</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>RXFDEP</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GNPTXFSIZ</name>
           <description>DOTG_GNPTXFSIZ</description>
           <addressOffset>0x28</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>NPTXFDEP</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GNPTXSTS</name>
           <description>DOTG_GNPTXSTS</description>
           <addressOffset>0x2C</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>NPTXFSPCAVAIL</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+            <field>
+              <name>NPTXQSPCAVAIL</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+            <field>
+              <name>NPTXQTOP</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>7</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GI2CCTL</name>
           <description>DOTG_GI2CCTL</description>
           <addressOffset>0x30</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>RWDATA</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+            <field>
+              <name>REGADDR</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+            <field>
+              <name>ADDR</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>7</bitWidth>
+            </field>
+            <field>
+              <name>I2CEN</name>
+              <bitOffset>23</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ACK</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>I2CSUSPCTL</name>
+              <bitOffset>25</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>I2CDEVADR</name>
+              <bitOffset>26</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>I2CDATSE0</name>
+              <bitOffset>28</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RW</name>
+              <bitOffset>30</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>BSYDNE_SC</name>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GPVNDCTL</name>
           <description>DOTG_GPVNDCTL</description>
           <addressOffset>0x34</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>REGDATA</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+            <field>
+              <name>VCTRL</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+            <field>
+              <name>REGADDR</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+            <field>
+              <name>REGWR</name>
+              <bitOffset>22</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>NEWREGREQ</name>
+              <bitOffset>25</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>VSTSBSY</name>
+              <bitOffset>26</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>VSTSDONE</name>
+              <bitOffset>27</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DISULPIDRVR</name>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GGPIO</name>
           <description>DOTG_GGPIO</description>
           <addressOffset>0x38</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>GPI</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+            <field>
+              <name>GPO</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GUID</name>
@@ -7644,30 +8418,285 @@
           <description>DOTG_GHWCFG2</description>
           <addressOffset>0x48</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>OTGMODE</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>OTGARCH</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>SINGPNT</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>HSPHYTYPE</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>FSPHYTYPE</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>NUMDEVEPS</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>NUMHSTCHNL</name>
+              <bitOffset>14</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>PERIOSUPPORT</name>
+              <bitOffset>18</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DYNFIFOSIZING</name>
+              <bitOffset>19</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>MPI</name>
+              <bitOffset>20</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>NPTXQDEPTH</name>
+              <bitOffset>22</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>PTXQDEPTH</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>TKNQDEPTH</name>
+              <bitOffset>26</bitOffset>
+              <bitWidth>5</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GHWCFG3</name>
           <description>DOTG_GHWCFG3</description>
           <addressOffset>0x4C</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>XFERSIZEWIDTH</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>PKTSIZEWIDTH</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>OTGEN</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>I2CINTSEL</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>VNDCTLSUPT</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OPTFEATURE</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RSTTYPE</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DFIFODEPTH</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GHWCFG4</name>
           <description>DOTG_GHWCFG4</description>
           <addressOffset>0x50</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>NUMDEVPERIOEPS</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>ENABLEPWROPT</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>AHBFREQ</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PHYDATAWIDTH</name>
+              <bitOffset>14</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>NUMCTLEPS</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>IDDGFLTR</name>
+              <bitOffset>20</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>VBUSVALIDFLTR</name>
+              <bitOffset>21</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>AVALIDFLTR</name>
+              <bitOffset>22</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>BVALIDFLTR</name>
+              <bitOffset>23</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SESSENDFLTR</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GLPMCFG</name>
           <description>DOTG_GLPMCFG</description>
           <addressOffset>0x54</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>HSIC_CONN</name>
+              <bitOffset>30</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GPWRDN</name>
           <description>DOTG_GPWRDN</description>
           <addressOffset>0x58</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>PMU_IRQ_SEL</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PMU_ACTIVE</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RESTORE</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>POWER_DOWN_CLAMP</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>POWER_DOWN_RST</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>POWER_DOWN</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DISABLE_VBUS</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>LINESTATE</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>LINESTATE_INT</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RESETDET</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RESETDET_INT</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DISCONN</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DISCONN_INT</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>CONNDET</name>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>CONNDET_INT</name>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IDDIG</name>
+              <bitOffset>21</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>BVALID</name>
+              <bitOffset>22</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>GDFIFOCFG</name>
@@ -7686,96 +8715,493 @@
           <description>DOTG_HPTXFSIZ</description>
           <addressOffset>0x100</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>PTXFSTADDR</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+            <field>
+              <name>PTXFSIZE</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>HCFG</name>
           <description>DOTG_HCFG</description>
           <addressOffset>0x400</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>FSLSPCLKSEL</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>FSLSSUPP</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>32KHZSUSPEND</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>MULTISEGDMA</name>
+              <bitOffset>23</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>FLENTRIES</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>PERSCHEDENABLE</name>
+              <bitOffset>26</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>MODECHANGERDY</name>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>HFIR</name>
           <description>DOTG_HFIR</description>
           <addressOffset>0x404</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>FRINT</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+            <field>
+              <name>RELOADCTRL</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>HFNUM</name>
           <description>DOTG_HFNUM</description>
           <addressOffset>0x408</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>FRNUM</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+            <field>
+              <name>FRREM</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>HPTXSTS</name>
           <description>DOTG_HPTXSTS</description>
           <addressOffset>0x410</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>PTXFSPCAVAIL</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+            <field>
+              <name>PTXQSPCAVAIL</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+            <field>
+              <name>TERMINATE</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TOKEN</name>
+              <bitOffset>25</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>CHAN</name>
+              <bitOffset>27</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>ODD</name>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>HAINT</name>
           <description>DOTG_HAINT</description>
           <addressOffset>0x414</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>HAINT</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>HAINTMSK</name>
           <description>DOTG_HAINTMSK</description>
           <addressOffset>0x418</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>HAINTMSK</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>HPRT</name>
           <description>DOTG_HPRT</description>
           <addressOffset>0x440</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>PRTCONNSTS</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PRTCONNDET</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PRTENA</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PRTENCHNG</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PRTOVRCURRACT</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PRTOVRCURRCHNG</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PRTRES</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PRTSUSP</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PRTRST</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PRTLNSTS</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>PRTPWR</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PRTTSTCTL</name>
+              <bitOffset>13</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>PRTSPD</name>
+              <bitOffset>17</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>DCFG</name>
           <description>DOTG_DCFG</description>
           <addressOffset>0x800</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>DEVSPD</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>NZSTSOUTHSHK</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DEVADDR</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>7</bitWidth>
+            </field>
+            <field>
+              <name>PERFRINT</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>EPMISCNT</name>
+              <bitOffset>18</bitOffset>
+              <bitWidth>5</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>DCTL</name>
           <description>DOTG_DCTL</description>
           <addressOffset>0x804</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>RMTWKUPSIG</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SFTDISCON</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>GNPINNAKSTS</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>GOUTNAKSTS</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TSTCTL</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>SGNPINNAK</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>CGNPINNAK</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SGOUTNAK</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>CGOUTNAK</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PWRONPRGDONE</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>DSTS</name>
           <description>DOTG_DSTS</description>
           <addressOffset>0x808</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>SUSPSTS</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENUMSPD</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>ERRTICERR</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SOFFN</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>14</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>DIEPMSK</name>
           <description>DOTG_DIEPMSK</description>
           <addressOffset>0x810</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>XFERCOMPLMSK</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EPDISBLDMSK</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>AHBERRMSK</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TIMEOUTMSK</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>INTKNTXFEMPMSK</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>INTKNEPMISMSK</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>INEPNAKEFFMSK</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TXFIFOUNDRNMSK</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>DOEPMSK</name>
           <description>DOTG_DOEPMSK</description>
           <addressOffset>0x814</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>XFERCOMPLMSK</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EPDISBLDMSK</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>AHBERRMSK</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SETUPMSK</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUTTKNEPDISMSK</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>BACK2BACKSETUP</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUTPKTERRMSK</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>DAINT</name>
           <description>DOTG_DAINT</description>
           <addressOffset>0x818</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>INEPINT</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>DAINTMSK</name>
           <description>DOTG_DAINTMSK</description>
           <addressOffset>0x81C</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>INEPINT</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>DTKNQR1</name>
           <description>DOTG_DTKNQR1</description>
           <addressOffset>0x820</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>INTKNWPTR</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>5</bitWidth>
+            </field>
+            <field>
+              <name>WRAPBIT</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EPTKN</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>24</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>DTKNQR2</name>
@@ -7788,18 +9214,64 @@
           <description>DOTG_DVBUSDIS</description>
           <addressOffset>0x828</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>DVBUSDIS</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>DVBUSPULSE</name>
           <description>DOTG_DVBUSPULSE</description>
           <addressOffset>0x82C</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>DVBUSPULSE</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>12</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>DTHRCTL</name>
           <description>DOTG_DTHRCTL</description>
           <addressOffset>0x830</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>NONISOTHREN</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ISOTHREN</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TXTHRLEN</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>9</bitWidth>
+            </field>
+            <field>
+              <name>RXTHREN</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RXTHRLEN</name>
+              <bitOffset>17</bitOffset>
+              <bitWidth>9</bitWidth>
+            </field>
+            <field>
+              <name>ARBPRKEN</name>
+              <bitOffset>27</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>DTKNQR4</name>
