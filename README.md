@@ -47,10 +47,13 @@ git -C .. diff src/lib.rs   # 审查 diff 后再提交
    - **GADC**（13-bit ADC，v153 @`0x5703_6000`）、**KEYSCAN**（v150 @`0x5208_D000`）、
      **PDM**（v150 @`0x5208_E000`）、**QDEC**（v150 @`0x5200_0200`）——
      由 `tools/derive_bs2x_specific.py` 解析 `hal_<p>_v<NN>_regs_def.h` 的寄存器块 + 位域生成。
+   - **USB**（USB 2.0 OTG，Synopsys DWC OTG @`0x5800_0000`）—— 解析 `dwc_otgreg.h` 的
+     `#define DOTG_<REG> 0xNNNN` 偏移定义，生成 49 个寄存器（按偏移去重）。该头只有偏移、无位域分解，
+     故 USB 为**寄存器级**（无 field）覆盖。
 
 地址/实例/IRQ 溯源于 `/root/fbb_bs2x`（`platform_core.h` / `chip_core_irq.h` / 各 HAL 头）。
 
 ## 仍推后
 
-**USB / NFC**（IRQ 89 / 69）在 SDK 的 HAL 树里没有简单寄存器块头（属复杂子系统），暂作 GLB_CTL_M 上的中断保留，
+**NFC**（IRQ 69）在 SDK 的 HAL 树里没有简单寄存器块头（属复杂子系统），暂作 GLB_CTL_M 上的中断保留，
 随连接性补进；GLB_CTL_A/D、PMU1/PMU2_CMU、ULP_AON、FUSE 等电源/时钟控制块同理逐步补全。

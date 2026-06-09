@@ -123,8 +123,49 @@ def build_peripheral(header_path, name, base, irqs, description):
     return p
 
 
+def build_usb(header_path, base, irqs):
+    """USB 2.0 OTG (Synopsys DWC OTG). Unlike the HAL headers, dwc_otgreg.h uses
+    `#define DOTG_<REG> 0xNNNN` offset defines (no struct/union, no bitfield
+    breakdown in-header), so we emit register-level (fieldless) coverage of the
+    named registers, deduped by offset (read/pop host/device variants share one)."""
+    src = open(header_path).read()
+    regs, seen = [], set()
+    for m in re.finditer(r"^#define\s+DOTG_([A-Z0-9]+)\s+0x([0-9A-Fa-f]+)\b", src, re.M):
+        name, off = m.group(1), int(m.group(2), 16)
+        if off in seen:
+            continue
+        seen.add(off)
+        regs.append((name, off))
+    p = ET.Element("peripheral")
+    ET.SubElement(p, "name").text = "USB"
+    ET.SubElement(p, "description").text = \
+        "USB 2.0 OTG controller (Synopsys DWC OTG, device-controller base)"
+    ET.SubElement(p, "baseAddress").text = f"0x{base:08X}"
+    max_off = max(o for _, o in regs)
+    ab = ET.SubElement(p, "addressBlock")
+    ET.SubElement(ab, "offset").text = "0x0"
+    ET.SubElement(ab, "size").text = f"0x{((max_off + 4 + 0xFFF) & ~0xFFF):X}"
+    ET.SubElement(ab, "usage").text = "registers"
+    for iname, ival in irqs:
+        it = ET.SubElement(p, "interrupt")
+        ET.SubElement(it, "name").text = iname
+        ET.SubElement(it, "description").text = f"{iname} (IRQ {ival})"
+        ET.SubElement(it, "value").text = str(ival)
+    regs_el = ET.SubElement(p, "registers")
+    for name, off in regs:
+        r = ET.SubElement(regs_el, "register")
+        ET.SubElement(r, "name").text = name
+        ET.SubElement(r, "description").text = f"DOTG_{name}"
+        ET.SubElement(r, "addressOffset").text = f"0x{off:X}"
+        ET.SubElement(r, "size").text = "0x20"
+    return p
+
+
 # BS2X-specific peripherals: (svd name, header rel-path, base, [(irq,val)], desc)
 SDK = "/root/fbb_bs2x/src/drivers/drivers/hal"
+USB_HEADER = ("/root/fbb_bs2x/src/drivers/drivers/driver/usb_unified/controller/"
+              "usb_device/dwc_otgreg.h")
+USB_BASE = 0x5800_0000  # DWC_USB_PORT1_BASE_ADDR / CONFIG_USBUDC_REG_BASE_ADDRESS
 SPECIFIC = [
     ("GADC", f"{SDK}/adc/v153/hal_adc_v153_regs_def.h", 0x5703_6000,
      [("GADC_DONE", 28), ("GADC_ALARM", 29)], "13-bit GADC (general ADC, v153)"),
@@ -137,11 +178,14 @@ SPECIFIC = [
 ]
 
 # IRQs that move OFF the GLB_CTL_M catch-all now that these peripherals own them.
-OWNED_IRQS = {28, 29, 38, 44, 46, 88}
+# (GADC 28/29, KEYSCAN 38/46, PDM 44, QDEC 88, USB 89.)
+OWNED_IRQS = {28, 29, 38, 44, 46, 88, 89}
 
 
 def build_all():
-    return [build_peripheral(h, n, b, irqs, d) for (n, h, b, irqs, d) in SPECIFIC]
+    periphs = [build_peripheral(h, n, b, irqs, d) for (n, h, b, irqs, d) in SPECIFIC]
+    periphs.append(build_usb(USB_HEADER, USB_BASE, [("USB", 89)]))
+    return periphs
 
 
 if __name__ == "__main__":
