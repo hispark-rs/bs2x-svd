@@ -1,7 +1,7 @@
 # bs2x-svd
 
 HiSilicon **BS21 / BS2X**（RISC-V RV32IMFC_Zicsr，BLE 5.4 + SLE/星闪 NearLink）的 CMSIS-SVD 描述，
-是 [`bs2x-pac`](https://github.com/sanchuanhehe/bs2x-pac)（经 svd2rust 生成）的上游真值。
+是 [`bs2x-pac`](https://github.com/hispark-rs/bs2x-pac)（经 svd2rust 生成）的上游真值。
 
 BS21 与 WS63 同属 HiSilicon **「HimiDeer」riscv31 核**，且 UART/TIMER/GPIO/I2C/SPI/PWM/DMA/RTC/TRNG/WDT/TCXO
 等都是**同一版本化 IP 块**（UART v151、TIMER v150、GPIO v150 —— 已对照 `fbb_bs2x` SDK 逐位核对）。

@@ -4,8 +4,8 @@
   <version>0.1</version>
   <description>HiSilicon BS21 / BS2X BLE 5.4 + SLE/NearLink SoC — ISA: rv32i2p1_m2p0_f2p2_c2p0_zicsr2p0 (RV32IMFC_Zicsr), 64MHz app core, 512KB ITCM, 160KB L2RAM, 1MB XIP flash @0x10000000. Shares WS63's HimiDeer riscv31 core + versioned IP (UART v151/TIMER v150/GPIO v150).</description>
   <licenseText>Register definitions derived from public ws63-guide documentation and fbb_ws63 HAL
-    headers. See https://github.com/sanchuanhehe/ws63-guide and
-    https://github.com/sanchuanhehe/ws63-svd</licenseText>
+    headers. See https://github.com/hispark-rs/ws63-guide and
+    https://github.com/hispark-rs/ws63-svd</licenseText>
   <cpu>
     <name>other</name>
     <revision>r0p0</revision>
