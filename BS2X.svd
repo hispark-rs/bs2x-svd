@@ -1786,7 +1786,7 @@
     </peripheral>
     <peripheral>
       <name>I2C0</name>
-      <description>I2C0 master controller</description>
+      <description>I2C0 master controller (DesignWare SSI, IP v151)</description>
       <baseAddress>0x52083000</baseAddress>
       <addressBlock>
         <offset>0x0000</offset>
@@ -1795,447 +1795,920 @@
       </addressBlock>
       <registers>
         <register>
-          <name>I2C_CTRL</name>
-          <description>I2C control register</description>
+          <name>IC_CON</name>
+          <description>IC_CON</description>
           <addressOffset>0x00</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
-              <name>int_done_mask</name>
-              <description>Transfer complete interrupt mask: 0=masked; 1=unmasked</description>
+              <name>master_mode</name>
+              <description>1=master</description>
               <bitRange>[0:0]</bitRange>
               <access>read-write</access>
             </field>
             <field>
-              <name>int_arb_loss_mask</name>
-              <description>Arbitration loss interrupt mask</description>
-              <bitRange>[1:1]</bitRange>
+              <name>speed</name>
+              <description>1=SS 2=FS 3=HS</description>
+              <bitRange>[2:1]</bitRange>
               <access>read-write</access>
             </field>
             <field>
-              <name>int_ack_err_mask</name>
-              <description>ACK error interrupt mask</description>
-              <bitRange>[2:2]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>int_rx_mask</name>
-              <description>RX interrupt mask</description>
+              <name>ic_10bitaddr_slave</name>
               <bitRange>[3:3]</bitRange>
               <access>read-write</access>
             </field>
             <field>
-              <name>int_tx_mask</name>
-              <description>TX interrupt mask</description>
+              <name>ic_10bitaddr_master</name>
               <bitRange>[4:4]</bitRange>
               <access>read-write</access>
             </field>
             <field>
-              <name>int_stop_mask</name>
-              <description>Stop condition interrupt mask</description>
+              <name>ic_restart_en</name>
               <bitRange>[5:5]</bitRange>
               <access>read-write</access>
             </field>
             <field>
-              <name>int_start_mask</name>
-              <description>Start condition interrupt mask</description>
+              <name>ic_slave_disable</name>
               <bitRange>[6:6]</bitRange>
               <access>read-write</access>
             </field>
             <field>
-              <name>int_mask</name>
-              <description>I2C interrupt master mask</description>
+              <name>stop_det_ifaddressed</name>
               <bitRange>[7:7]</bitRange>
               <access>read-write</access>
             </field>
             <field>
-              <name>i2c_en</name>
-              <description>I2C enable: 0=disabled; 1=enabled</description>
+              <name>tx_empty_ctrl</name>
               <bitRange>[8:8]</bitRange>
               <access>read-write</access>
             </field>
             <field>
-              <name>int_rxtide_mask</name>
-              <description>RX FIFO overflow interrupt mask</description>
+              <name>rx_fifo_full_hld_ctrl</name>
               <bitRange>[9:9]</bitRange>
               <access>read-write</access>
             </field>
             <field>
-              <name>int_txtide_mask</name>
-              <description>TX FIFO overflow interrupt mask</description>
+              <name>stop_det_if_master_active</name>
               <bitRange>[10:10]</bitRange>
               <access>read-write</access>
             </field>
             <field>
-              <name>mode_ctrl</name>
-              <description>I2C mode: 0=no FIFO; 1=FIFO mode</description>
+              <name>bus_clear_feature_ctrl</name>
               <bitRange>[11:11]</bitRange>
               <access>read-write</access>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>NoFIFO</name>
-                  <description>No FIFO transfer mode</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>FIFO</name>
-                  <description>FIFO transfer mode</description>
-                  <value>1</value>
-                </enumeratedValue>
-              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_ENABLE</name>
+          <description>IC_ENABLE</description>
+          <addressOffset>0x04</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>enable</name>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
             </field>
             <field>
-              <name>int_txfifo_over_mask</name>
-              <description>TX FIFO complete interrupt mask</description>
+              <name>abort</name>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>tx_cmd_block</name>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>sda_stuck_recovery_enable</name>
+              <bitRange>[3:3]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_TAR</name>
+          <description>IC_TAR</description>
+          <addressOffset>0x10</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ic_tar</name>
+              <description>target address</description>
+              <bitRange>[9:0]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>gc_or_start</name>
+              <bitRange>[10:10]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>special</name>
+              <bitRange>[11:11]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>master_10bitaddr</name>
+              <bitRange>[12:12]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>device_id</name>
+              <bitRange>[13:13]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SAR</name>
+          <description>IC_SAR</description>
+          <addressOffset>0x14</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ic_sar</name>
+              <description>slave address</description>
+              <bitRange>[9:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_HS_MADDR</name>
+          <description>IC_HS_MADDR</description>
+          <addressOffset>0x18</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ic_hs_mar</name>
+              <bitRange>[2:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_DATA_CMD</name>
+          <description>IC_DATA_CMD</description>
+          <addressOffset>0x1C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>dat</name>
+              <description>data byte</description>
+              <bitRange>[7:0]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>cmd</name>
+              <description>1=read 0=write</description>
+              <bitRange>[8:8]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>stop</name>
+              <bitRange>[9:9]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>restart</name>
+              <bitRange>[10:10]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>first_data_byte</name>
+              <bitRange>[11:11]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SS_SCL_HCNT</name>
+          <description>IC_SS_SCL_HCNT</description>
+          <addressOffset>0x30</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>cnt</name>
+              <bitRange>[15:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SS_SCL_LCNT</name>
+          <description>IC_SS_SCL_LCNT</description>
+          <addressOffset>0x34</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>cnt</name>
+              <bitRange>[15:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_FS_SCL_HCNT</name>
+          <description>IC_FS_SCL_HCNT</description>
+          <addressOffset>0x3C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>cnt</name>
+              <bitRange>[15:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_FS_SCL_LCNT</name>
+          <description>IC_FS_SCL_LCNT</description>
+          <addressOffset>0x40</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>cnt</name>
+              <bitRange>[15:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_HS_SCL_HCNT</name>
+          <description>IC_HS_SCL_HCNT</description>
+          <addressOffset>0x44</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>cnt</name>
+              <bitRange>[15:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_HS_SCL_LCNT</name>
+          <description>IC_HS_SCL_LCNT</description>
+          <addressOffset>0x48</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>cnt</name>
+              <bitRange>[15:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_RX_TL</name>
+          <description>IC_RX_TL</description>
+          <addressOffset>0x50</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>rx_tl</name>
+              <bitRange>[7:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_TX_TL</name>
+          <description>IC_TX_TL</description>
+          <addressOffset>0x54</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>tx_tl</name>
+              <bitRange>[7:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SLV_DATA_NACK_ONLY</name>
+          <description>IC_SLV_DATA_NACK_ONLY</description>
+          <addressOffset>0x58</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>nack</name>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_STATUS</name>
+          <description>IC_STATUS</description>
+          <addressOffset>0x60</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>activity</name>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>tfnf</name>
+              <description>TX not full</description>
+              <bitRange>[1:1]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>tfe</name>
+              <description>TX empty</description>
+              <bitRange>[2:2]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>rfne</name>
+              <description>RX not empty</description>
+              <bitRange>[3:3]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>rff</name>
+              <description>RX full</description>
+              <bitRange>[4:4]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>mst_activity</name>
+              <bitRange>[5:5]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>slv_activity</name>
+              <bitRange>[6:6]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_TXFLR</name>
+          <description>IC_TXFLR</description>
+          <addressOffset>0x64</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>txflr</name>
+              <bitRange>[5:0]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_RXFLR</name>
+          <description>IC_RXFLR</description>
+          <addressOffset>0x68</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>rxflr</name>
+              <bitRange>[5:0]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SDA_HOLD</name>
+          <description>IC_SDA_HOLD</description>
+          <addressOffset>0x6C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>sda_rx_hold</name>
+              <bitRange>[7:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SDA_HOLD_TX</name>
+          <description>IC_SDA_HOLD_TX</description>
+          <addressOffset>0x70</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>sda_tx_hold</name>
+              <bitRange>[15:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_TX_FLUSH_CNT</name>
+          <description>IC_TX_FLUSH_CNT</description>
+          <addressOffset>0x74</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>cnt</name>
+              <bitRange>[15:0]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_TX_ABRT_SOURCE</name>
+          <description>IC_TX_ABRT_SOURCE</description>
+          <addressOffset>0x78</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>user_abrt</name>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>sda_stuck_at_low</name>
+              <bitRange>[1:1]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>device_noack</name>
+              <bitRange>[2:2]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>device_slvaddr_noack</name>
+              <bitRange>[3:3]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>abrt_device_write</name>
+              <bitRange>[4:4]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_TX_ABRT_SLV_INTX</name>
+          <description>IC_TX_ABRT_SLV_INTX</description>
+          <addressOffset>0x7C</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>addr_7b_noack</name>
+              <description>7-bit address NACK (bus scan)</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>addr1_10b_noack</name>
+              <bitRange>[1:1]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>addr2_10b_noack</name>
+              <bitRange>[2:2]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>txdata_noack</name>
+              <bitRange>[3:3]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>gcall_noack</name>
+              <bitRange>[4:4]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>lost</name>
+              <description>arbitration lost</description>
+              <bitRange>[12:12]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_ACK_GENERAL_CALL</name>
+          <description>IC_ACK_GENERAL_CALL</description>
+          <addressOffset>0x80</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ack_gen_call</name>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_ENABLE_STATUS</name>
+          <description>IC_ENABLE_STATUS</description>
+          <addressOffset>0x84</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ic_en</name>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>slv_disable_while_busy</name>
+              <bitRange>[1:1]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>slv_rx_data_lost</name>
+              <bitRange>[2:2]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_DMA_CR</name>
+          <description>IC_DMA_CR</description>
+          <addressOffset>0xA0</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>rdmae</name>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>tdmae</name>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_DMA_TDLR</name>
+          <description>IC_DMA_TDLR</description>
+          <addressOffset>0xA4</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>dmatdl</name>
+              <bitRange>[5:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_DMA_RDLR</name>
+          <description>IC_DMA_RDLR</description>
+          <addressOffset>0xA8</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>dmardl</name>
+              <bitRange>[5:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SDA_SETUP</name>
+          <description>IC_SDA_SETUP</description>
+          <addressOffset>0xAC</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>sda_setup</name>
+              <bitRange>[7:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_INTR_MASK</name>
+          <description>IC_INTR_MASK</description>
+          <addressOffset>0xB0</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>rx_under</name>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>rx_over</name>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>rx_full</name>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>tx_over</name>
+              <bitRange>[3:3]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>tx_empty</name>
+              <bitRange>[4:4]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>rd_req</name>
+              <bitRange>[5:5]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>tx_abrt</name>
+              <bitRange>[6:6]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>rx_done</name>
+              <bitRange>[7:7]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>activity</name>
+              <bitRange>[8:8]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>stop_det</name>
+              <bitRange>[9:9]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>start_det</name>
+              <bitRange>[10:10]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>gen_call</name>
+              <bitRange>[11:11]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>restart_det</name>
               <bitRange>[12:12]</bitRange>
               <access>read-write</access>
             </field>
           </fields>
         </register>
         <register>
-          <name>I2C_COM</name>
-          <description>I2C command register</description>
-          <addressOffset>0x04</addressOffset>
+          <name>IC_INTR_STAT</name>
+          <description>IC_INTR_STAT</description>
+          <addressOffset>0xB4</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
-              <name>op_stop</name>
-              <description>Generate stop condition: 0=end; 1=active</description>
-              <bitRange>[0:0]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>op_we</name>
-              <description>Generate write operation</description>
-              <bitRange>[1:1]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>op_rd</name>
-              <description>Generate read operation</description>
-              <bitRange>[2:2]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>op_start</name>
-              <description>Generate start condition</description>
-              <bitRange>[3:3]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>op_ack</name>
-              <description>Master RX ACK: 0=send ACK; 1=no ACK</description>
-              <bitRange>[4:4]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>I2C_ICR</name>
-          <description>I2C interrupt clear register</description>
-          <addressOffset>0x08</addressOffset>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>clr_int_done</name>
-              <description>Clear transfer complete interrupt</description>
-              <bitRange>[0:0]</bitRange>
-              <access>write-only</access>
-            </field>
-            <field>
-              <name>clr_int_arb_loss</name>
-              <description>Clear arbitration loss interrupt</description>
-              <bitRange>[1:1]</bitRange>
-              <access>write-only</access>
-            </field>
-            <field>
-              <name>clr_int_ack_err</name>
-              <description>Clear ACK error interrupt</description>
-              <bitRange>[2:2]</bitRange>
-              <access>write-only</access>
-            </field>
-            <field>
-              <name>clr_int_rx</name>
-              <description>Clear RX interrupt</description>
-              <bitRange>[3:3]</bitRange>
-              <access>write-only</access>
-            </field>
-            <field>
-              <name>clr_int_tx</name>
-              <description>Clear TX interrupt</description>
-              <bitRange>[4:4]</bitRange>
-              <access>write-only</access>
-            </field>
-            <field>
-              <name>clr_int_stop</name>
-              <description>Clear stop interrupt</description>
-              <bitRange>[5:5]</bitRange>
-              <access>write-only</access>
-            </field>
-            <field>
-              <name>clr_int_start</name>
-              <description>Clear start interrupt</description>
-              <bitRange>[6:6]</bitRange>
-              <access>write-only</access>
-            </field>
-            <field>
-              <name>clr_int_rxtide</name>
-              <description>Clear RX FIFO overflow interrupt</description>
-              <bitRange>[7:7]</bitRange>
-              <access>write-only</access>
-            </field>
-            <field>
-              <name>clr_int_txtide</name>
-              <description>Clear TX FIFO overflow interrupt</description>
-              <bitRange>[8:8]</bitRange>
-              <access>write-only</access>
-            </field>
-            <field>
-              <name>clr_int_txfifo_over</name>
-              <description>Clear TX FIFO complete interrupt</description>
-              <bitRange>[9:9]</bitRange>
-              <access>write-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>I2C_SR</name>
-          <description>I2C status register</description>
-          <addressOffset>0x0C</addressOffset>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>int_done</name>
-              <description>Transfer complete interrupt flag</description>
+              <name>rx_under</name>
               <bitRange>[0:0]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>int_arb_loss</name>
-              <description>Arbitration loss interrupt flag</description>
+              <name>rx_over</name>
               <bitRange>[1:1]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>int_ack_err</name>
-              <description>ACK error interrupt flag</description>
+              <name>rx_full</name>
               <bitRange>[2:2]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>int_rx</name>
-              <description>RX interrupt flag</description>
+              <name>tx_over</name>
               <bitRange>[3:3]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>int_tx</name>
-              <description>TX interrupt flag</description>
+              <name>tx_empty</name>
               <bitRange>[4:4]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>int_stop</name>
-              <description>Stop interrupt flag</description>
+              <name>rd_req</name>
               <bitRange>[5:5]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>int_start</name>
-              <description>Start interrupt flag</description>
+              <name>tx_abrt</name>
               <bitRange>[6:6]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>bus_busy</name>
-              <description>Bus busy: 0=idle; 1=busy</description>
+              <name>rx_done</name>
               <bitRange>[7:7]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>int_rxtide</name>
-              <description>RX FIFO overflow flag</description>
+              <name>activity</name>
               <bitRange>[8:8]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>int_txtide</name>
-              <description>TX FIFO overflow flag</description>
+              <name>stop_det</name>
               <bitRange>[9:9]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>int_txfifo_over</name>
-              <description>TX FIFO complete flag</description>
+              <name>start_det</name>
               <bitRange>[10:10]</bitRange>
               <access>read-only</access>
             </field>
-          </fields>
-        </register>
-        <register>
-          <name>I2C_SCL_H</name>
-          <description>SCL high period register [Constraint: write only when I2C_CTRL[int_mask]=0]</description>
-          <addressOffset>0x10</addressOffset>
-          <resetValue>0x00000000</resetValue>
-          <fields>
             <field>
-              <name>scl_h</name>
-              <description>SCL high period (value*2 = actual period)</description>
-              <bitRange>[15:0]</bitRange>
-              <access>read-write</access>
+              <name>gen_call</name>
+              <bitRange>[11:11]</bitRange>
+              <access>read-only</access>
             </field>
-          </fields>
-        </register>
-        <register>
-          <name>I2C_SCL_L</name>
-          <description>SCL low period register [Constraint: write only when I2C_CTRL[int_mask]=0]</description>
-          <addressOffset>0x14</addressOffset>
-          <resetValue>0x00000000</resetValue>
-          <fields>
             <field>
-              <name>scl_l</name>
-              <description>SCL low period (value*2 = actual period)</description>
-              <bitRange>[15:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>I2C_TXR</name>
-          <description>I2C TX data register</description>
-          <addressOffset>0x18</addressOffset>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>i2c_txr</name>
-              <description>TX data byte</description>
-              <bitRange>[7:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>I2C_RXR</name>
-          <description>I2C RX data register</description>
-          <addressOffset>0x1C</addressOffset>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>i2c_rxr</name>
-              <description>RX data byte</description>
-              <bitRange>[7:0]</bitRange>
+              <name>restart_det</name>
+              <bitRange>[12:12]</bitRange>
               <access>read-only</access>
             </field>
           </fields>
         </register>
         <register>
-          <name>I2C_FIFOSTATUS</name>
-          <description>FIFO status register</description>
-          <addressOffset>0x20</addressOffset>
+          <name>IC_RAW_INTR_STAT</name>
+          <description>IC_RAW_INTR_STAT</description>
+          <addressOffset>0xB8</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
-              <name>txff</name>
-              <description>TX FIFO full: 0=not full; 1=full</description>
+              <name>rx_under</name>
               <bitRange>[0:0]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>txfe</name>
-              <description>TX FIFO empty: 0=not empty; 1=empty</description>
+              <name>rx_over</name>
               <bitRange>[1:1]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>rxff</name>
-              <description>RX FIFO full</description>
+              <name>rx_full</name>
               <bitRange>[2:2]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>rxfe</name>
-              <description>RX FIFO empty</description>
+              <name>tx_over</name>
               <bitRange>[3:3]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>tx_empty</name>
+              <bitRange>[4:4]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>rd_req</name>
+              <bitRange>[5:5]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>tx_abrt</name>
+              <bitRange>[6:6]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>rx_done</name>
+              <bitRange>[7:7]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>activity</name>
+              <bitRange>[8:8]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>stop_det</name>
+              <bitRange>[9:9]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>start_det</name>
+              <bitRange>[10:10]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>gen_call</name>
+              <bitRange>[11:11]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>restart_det</name>
+              <bitRange>[12:12]</bitRange>
               <access>read-only</access>
             </field>
           </fields>
         </register>
         <register>
-          <name>I2C_TXCOUNT</name>
-          <description>TX FIFO count register</description>
-          <addressOffset>0x24</addressOffset>
+          <name>IC_INTR_STAT_ALL</name>
+          <description>IC_INTR_STAT_ALL</description>
+          <addressOffset>0xBC</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
-              <name>txcount</name>
-              <description>TX FIFO character count (write any value to clear TX FIFO)</description>
-              <bitRange>[5:0]</bitRange>
-              <access>read-write</access>
+              <name>stat</name>
+              <bitRange>[12:0]</bitRange>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
         <register>
-          <name>I2C_RXCOUNT</name>
-          <description>RX FIFO count register</description>
-          <addressOffset>0x28</addressOffset>
+          <name>IC_CLR_INTR</name>
+          <description>IC_CLR_INTR</description>
+          <addressOffset>0xC0</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
-              <name>rxcount</name>
-              <description>RX FIFO character count (write any value to clear RX FIFO)</description>
-              <bitRange>[5:0]</bitRange>
-              <access>read-write</access>
+              <name>clr</name>
+              <description>read-to-clear all</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
         <register>
-          <name>I2C_RXTIDE</name>
-          <description>RX FIFO threshold register</description>
-          <addressOffset>0x2C</addressOffset>
-          <resetValue>0x00000001</resetValue>
+          <name>IC_CLR_INT</name>
+          <description>IC_CLR_INT</description>
+          <addressOffset>0xC4</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
           <fields>
             <field>
-              <name>rxtide</name>
-              <description>RX FIFO overflow interrupt trigger value</description>
-              <bitRange>[5:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>I2C_TXTIDE</name>
-          <description>TX FIFO threshold register</description>
-          <addressOffset>0x30</addressOffset>
-          <resetValue>0x00000001</resetValue>
-          <fields>
-            <field>
-              <name>txtide</name>
-              <description>TX FIFO overflow interrupt trigger value</description>
-              <bitRange>[5:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>I2C_FTRPER</name>
-          <description>Glitch filter configuration register</description>
-          <addressOffset>0x34</addressOffset>
-          <resetValue>0x0000000F</resetValue>
-          <fields>
-            <field>
-              <name>ftrper</name>
-              <description>Glitch filter period in ic_clk cycles</description>
-              <bitRange>[3:0]</bitRange>
-              <access>read-write</access>
+              <name>clr</name>
+              <description>read-to-clear combined</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
       </registers>
-      <interrupt>
-        <name>I2C_0</name>
-        <description>I2C_0 (IRQ 62)</description>
-        <value>62</value>
-      </interrupt>
     </peripheral>
     <peripheral>
       <name>SPI0</name>
