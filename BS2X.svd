@@ -5524,91 +5524,154 @@
     </peripheral>
     <peripheral>
       <name>RTC</name>
-      <description>Real-time clock (48-bit free-running counter, v100)</description>
-      <baseAddress>0x57024000</baseAddress>
+      <description>RTC instance 0 (rtc_unified IP v150)</description>
+      <baseAddress>0x57024100</baseAddress>
       <addressBlock>
         <offset>0x0000</offset>
-        <size>0x0100</size>
+        <size>0x0020</size>
         <usage>registers</usage>
       </addressBlock>
       <registers>
         <register>
-          <name>RTC_LOAD_COUNT</name>
-          <description>RTC load count register</description>
+          <name>LOAD_COUNT0</name>
+          <description>LOAD_COUNT0</description>
           <addressOffset>0x00</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
-              <name>load_count</name>
-              <description>Load count value (threshold for interrupt)</description>
+              <name>load_count0</name>
               <bitRange>[31:0]</bitRange>
               <access>read-write</access>
             </field>
           </fields>
         </register>
         <register>
-          <name>RTC_CURRENT_VALUE</name>
-          <description>RTC current count value</description>
+          <name>LOAD_COUNT1</name>
+          <description>LOAD_COUNT1</description>
           <addressOffset>0x04</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
-              <name>current_value</name>
-              <description>Current counter value</description>
+              <name>load_count1</name>
+              <bitRange>[31:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CURRENT_VALUE0</name>
+          <description>CURRENT_VALUE0</description>
+          <addressOffset>0x08</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>current_value0</name>
               <bitRange>[31:0]</bitRange>
               <access>read-only</access>
             </field>
           </fields>
         </register>
         <register>
-          <name>RTC_CONTROL</name>
-          <description>RTC control register</description>
-          <addressOffset>0x08</addressOffset>
+          <name>CURRENT_VALUE1</name>
+          <description>CURRENT_VALUE1</description>
+          <addressOffset>0x0C</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>current_value1</name>
+              <bitRange>[31:0]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CONTROL</name>
+          <description>CONTROL</description>
+          <addressOffset>0x10</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
               <name>enable</name>
-              <description>RTC enable</description>
               <bitRange>[0:0]</bitRange>
               <access>read-write</access>
             </field>
             <field>
               <name>mode</name>
-              <description>Mode: 0=free running; 1=periodic</description>
-              <bitRange>[1:1]</bitRange>
+              <bitRange>[2:1]</bitRange>
               <access>read-write</access>
             </field>
             <field>
               <name>int_mask</name>
-              <description>Interrupt mask: 0=unmasked; 1=masked</description>
-              <bitRange>[2:2]</bitRange>
+              <bitRange>[3:3]</bitRange>
               <access>read-write</access>
+            </field>
+            <field>
+              <name>rstfsm</name>
+              <bitRange>[4:4]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>cnt_req</name>
+              <bitRange>[5:5]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>cnt_lock</name>
+              <bitRange>[6:6]</bitRange>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
         <register>
-          <name>RTC_EOI</name>
-          <description>RTC end-of-interrupt (read to clear)</description>
-          <addressOffset>0x0C</addressOffset>
+          <name>EOI_REN</name>
+          <description>EOI_REN</description>
+          <addressOffset>0x14</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
               <name>eoi</name>
-              <description>Read to clear RTC interrupt</description>
               <bitRange>[0:0]</bitRange>
               <access>read-only</access>
             </field>
           </fields>
         </register>
         <register>
-          <name>RTC_INT_STATUS</name>
-          <description>RTC interrupt status</description>
-          <addressOffset>0x10</addressOffset>
+          <name>RAW_INTR</name>
+          <description>RAW_INTR</description>
+          <addressOffset>0x18</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
               <name>int_status</name>
-              <description>Interrupt status</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR</name>
+          <description>INTR</description>
+          <addressOffset>0x1C</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>int_status</name>
               <bitRange>[0:0]</bitRange>
               <access>read-only</access>
             </field>
@@ -5646,6 +5709,71 @@
         <usage>registers</usage>
       </addressBlock>
       <registers>
+        <register>
+          <name>TRNG_CTRL</name>
+          <description>TRNG_CTRL</description>
+          <addressOffset>0x00</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>health_test_en</name>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>online_test_en</name>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>post_proc_en</name>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>rnd_chk_en</name>
+              <bitRange>[3:3]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>lfsr_reseed_en</name>
+              <bitRange>[4:4]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>private_en</name>
+              <bitRange>[5:5]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_RING_EN</name>
+          <description>TRNG_RING_EN</description>
+          <addressOffset>0x24</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ro_en</name>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>tero_en</name>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>fro_en</name>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
         <register>
           <name>TRNG_FIFO_DATA</name>
           <description>TRNG FIFO data output register</description>
