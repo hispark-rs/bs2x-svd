@@ -1788,6 +1788,11 @@
       <name>I2C0</name>
       <description>I2C0 master controller (DesignWare SSI, IP v151)</description>
       <baseAddress>0x52083000</baseAddress>
+      <interrupt>
+        <name>I2C_0</name>
+        <description>I2C_0 (IRQ 62)</description>
+        <value>62</value>
+      </interrupt>
       <addressBlock>
         <offset>0x0000</offset>
         <size>0x0100</size>
