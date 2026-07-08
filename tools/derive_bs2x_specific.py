@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Derive SVD <peripheral> blocks for BS2X-specific peripherals from the fbb_bs2x
-SDK HAL register-definition headers (`hal_<p>_v<NN>_regs_def.h`).
+from __future__ import annotations
 
-These peripherals have NO WS63 equivalent (so they can't be reused from WS63.svd):
-GADC (13-bit ADC), KEYSCAN, PDM, QDEC. Each header follows the HiSilicon pattern:
+"""Derive SVD <peripheral> blocks for BS2X peripherals from the fbb_bs2x SDK HAL
+register-definition headers (`hal_<p>_v<NN>_regs_def.h`).
+
+These peripherals either have no WS63 equivalent (GADC / KEYSCAN / PDM / QDEC /
+USB support blocks) or are BS2X variants whose register layout is not compatible
+with the WS63 block we originally reused (I2C v151 / RTC v150 / TRNG v1). Each
+header follows a HiSilicon pattern:
 
     typedef union <reg>[_data] {              // per-register field definitions
         volatile uint32_t d32;
@@ -22,10 +26,36 @@ union become fieldless 32-bit registers. Truth source: `/root/fbb_bs2x`.
 
 Used by build_bs2x_svd.py. Run standalone to dump one peripheral's XML.
 """
+import os
+from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
 
 RESERVED = re.compile(r"^reser?ve")  # matches reserved / reseved (SDK typo)
+NO_FIELD_MEMBERS = {
+    # The SDK `ic_v151_clr_intr_data` union overflows 32 bits and appears to mix
+    # the combined read-to-clear register with individual clear-register fields.
+    # HAL reads IC_CLR_INTR as a whole word, so do not publish misleading fields.
+    "clr_intr",
+}
+
+UNION_ALIASES = {
+    # ADC PMU struct members use shorter union names in the SDK header.
+    "afe_adc_ldo_cfg": "afe_ldo_cfg_data",
+    "afe_dig_pwr_en": "afe_dig_pwr_data",
+    # GADC has one union shared by CFG_PRECHG_LEAD / CFG_CLK_DIV_0.
+    "cfg_clk_div_0": "cfg_clk_div_data",
+    # I2C v151 clock count registers use long DesignWare union names.
+    "ss_scl_hcnt": "ic_v151_ss_scl_hcnt_ic_ufm_scl_hcnt_data",
+    "ss_scl_lcnt": "ic_v151_ss_scl_lcnt_ic_ufm_scl_lcnt_data",
+    "fs_scl_hcnt": "ic_v151_fs_scl_hcnt_ic_ufm_tbuf_cnt_data",
+    "fs_scl_lcnt": "ic_v151_fs_scl_lcnt_data",
+    # RTC v150 instance block members use generic register names.
+    "control": "rtc_v150_control_reg_data",
+    "eoi_ren": "rtc_v150_eoi_data",
+    "raw_intr": "rtc_v150_int_status_data",
+    "intr": "rtc_v150_int_status_data",
+}
 
 
 def _norm(s: str) -> str:
@@ -39,10 +69,23 @@ def _norm(s: str) -> str:
     return s.replace("_", "")
 
 
+def svd_identifier(name: str) -> str:
+    """Return a CMSIS-SVD-compatible identifier without losing the source name."""
+    ident = re.sub(r"[^A-Za-z0-9_]", "_", name)
+    if not ident or not re.match(r"[_A-Za-z]", ident):
+        ident = "F_" + ident
+    return ident
+
+
 def match_union(unions: dict, member: str):
     """Find the bitfields for a block member. Union names vary by peripheral:
     `<member>` (QDEC), `<member>_data` (KEYSCAN), `<prefix>_<member>_data` (PDM),
     or a digit-glued variant (GADC `cfg_gadc_data0`)."""
+    if member in NO_FIELD_MEMBERS:
+        return None
+    alias = UNION_ALIASES.get(member)
+    if alias and alias in unions:
+        return unions[alias]
     for k in (member, member + "_data"):
         if k in unions:
             return unions[k]
@@ -61,46 +104,139 @@ def parse_unions(src: str) -> dict:
     out = {}
     for um in re.finditer(r"typedef union (\w+)\s*\{(.*?)\}\s*\1_t;", src, re.S):
         name, body = um.group(1), um.group(2)
-        bm = re.search(r"struct\s*\{(.*?)\}\s*b", body, re.S)
+        # Most HiSilicon unions name the bitfield view `b`, but a few I2C v151
+        # dual-purpose registers use `ss_b` / `fs_b` / `ufm_b`. Use the first
+        # struct view as the normal-mode register layout.
+        bm = re.search(r"struct\s*\{(.*?)\}\s*\w+\s*;", body, re.S)
         if not bm:
             continue
         fields, bit = [], 0
         for fm in re.finditer(r"uint32_t\s+(\w+)\s*:\s*(\d+)", bm.group(1)):
             fname, width = fm.group(1), int(fm.group(2))
-            if not RESERVED.match(fname):
+            if not RESERVED.match(fname) and bit + width <= 32:
                 fields.append((fname, bit, width))
             bit += width
         out[name] = fields
     return out
 
 
-def parse_block(src: str, block_name: str):
+def parse_block(src: str, block_name: str, *, sequential=False, ignore_offsets=False):
     """[(member, offset, dim_or_None), ...] for the `<block_name>` struct, reserved skipped."""
     m = re.search(r"typedef struct " + re.escape(block_name) + r"\s*\{(.*?)\}\s*"
                   + re.escape(block_name) + r"_t;", src, re.S)
     if not m:
         raise ValueError(f"block struct {block_name} not found")
     regs = []
-    for line in m.group(1).splitlines():
-        lm = re.search(r"uint32_t\s+(\w+)\s*(?:\[(\w+)\])?\s*;.*?Offset:\s*([0-9A-Fa-f]+)", line)
-        if not lm:
-            continue
-        member, dim, off = lm.group(1), lm.group(2), lm.group(3)
-        if RESERVED.match(member):
+    body = m.group(1)
+    decls = list(re.finditer(
+        r"(?:volatile\s+)?(?:const\s+)?[\w_]+\s+(\w+)\s*(?:\[(\w+)\])?\s*;",
+        body,
+    ))
+    cursor = 0
+    for idx, dm in enumerate(decls):
+        member, dim = dm.group(1), dm.group(2)
+        comment_end = decls[idx + 1].start() if idx + 1 < len(decls) else len(body)
+        comment = body[dm.end():comment_end]
+        # Only accept concrete offsets like "Offset: 30h". Formula comments such
+        # as PDM hpf_ctrl's "Offset: 4h * MicChannelNum + 18h" are expanded by
+        # a peripheral-specific supplement below.
+        om = None if ignore_offsets else re.search(
+            r"Offset:\s*([0-9A-Fa-f]+)h?\s*(?:[<\.\r\n]|$)",
+            comment,
+        )
+        if om:
+            off = int(om.group(1), 16)
+        elif sequential or ignore_offsets:
+            off = cursor
+        else:
             continue
         dimn = None
+        count = 1
         if dim:
             dimn = int(dim) if dim.isdigit() else None  # macro dims: emit scalar
-        regs.append((member, int(off, 16), dimn))
+            count = dimn if dimn is not None else 1
+        cursor = off + 4 * count
+        if RESERVED.match(member):
+            continue
+        regs.append((member, off, dimn))
     return regs
 
 
-def build_peripheral(header_path, name, base, irqs, description):
+def add_register(regs_el, unions, member, off, seen=None, name=None, description=None, access=None, fields=None):
+    rname = name or member.upper()
+    if seen is not None:
+        if rname in seen:
+            return None
+        seen.add(rname)
+    r = ET.SubElement(regs_el, "register")
+    ET.SubElement(r, "name").text = rname
+    ET.SubElement(r, "description").text = description or member
+    ET.SubElement(r, "addressOffset").text = f"0x{off:X}"
+    ET.SubElement(r, "size").text = "0x20"
+    if access:
+        ET.SubElement(r, "access").text = access
+    rf = fields if fields is not None else match_union(unions, member)
+    if rf:
+        fel = ET.SubElement(r, "fields")
+        for fname, bit, width in rf:
+            f = ET.SubElement(fel, "field")
+            ET.SubElement(f, "name").text = svd_identifier(fname)
+            ET.SubElement(f, "bitOffset").text = str(bit)
+            ET.SubElement(f, "bitWidth").text = str(width)
+    return r
+
+
+def update_address_block_size(periph):
+    regs = periph.find("registers").findall("register")
+    max_end = 0
+    for r in regs:
+        off = int(r.findtext("addressOffset"), 0)
+        size_bits = int(r.findtext("size", "0x20"), 0)
+        max_end = max(max_end, off + max(4, size_bits // 8))
+    periph.find("addressBlock").find("size").text = f"0x{((max_end + 0xF) & ~0xF):X}"
+
+
+def ensure_register_fields(regs_el, reg_name, fields, access=None):
+    """Attach hand-audited fields to an existing register when the SDK exposes
+    the semantics in helper functions but not in a typedef union."""
+    for reg in regs_el.findall("register"):
+        if reg.findtext("name") != reg_name:
+            continue
+        if access and reg.find("access") is None:
+            fields_el = reg.find("fields")
+            access_el = ET.Element("access")
+            access_el.text = access
+            if fields_el is None:
+                reg.append(access_el)
+            else:
+                reg.insert(list(reg).index(fields_el), access_el)
+        if reg.find("fields") is None:
+            fel = ET.SubElement(reg, "fields")
+            for fname, bit, width in fields:
+                f = ET.SubElement(fel, "field")
+                ET.SubElement(f, "name").text = svd_identifier(fname)
+                ET.SubElement(f, "bitOffset").text = str(bit)
+                ET.SubElement(f, "bitWidth").text = str(width)
+        return
+
+
+def build_peripheral(
+    header_path,
+    name,
+    base,
+    irqs,
+    description,
+    block_name=None,
+    extra_blocks=None,
+    register_namer=None,
+    sequential_block=False,
+    ignore_offsets=False,
+):
     """Return an SVD <peripheral> Element derived from the HAL header."""
     src = open(header_path).read()
     unions = parse_unions(src)
-    block = re.search(r"typedef struct (\w*regs)\s*\{", src).group(1)
-    regs = parse_block(src, block)
+    block = block_name or re.search(r"typedef struct (\w*regs)\s*\{", src).group(1)
+    regs = parse_block(src, block, sequential=sequential_block, ignore_offsets=ignore_offsets)
 
     p = ET.Element("peripheral")
     ET.SubElement(p, "name").text = name
@@ -120,24 +256,70 @@ def build_peripheral(header_path, name, base, irqs, description):
     regs_el = ET.SubElement(p, "registers")
     seen = set()
     for member, off, _dim in regs:
-        rname = member.upper()
-        if rname in seen:
-            continue
-        seen.add(rname)
-        r = ET.SubElement(regs_el, "register")
-        ET.SubElement(r, "name").text = rname
-        ET.SubElement(r, "description").text = member
-        ET.SubElement(r, "addressOffset").text = f"0x{off:X}"
-        ET.SubElement(r, "size").text = "0x20"
-        fields = match_union(unions, member)
-        if fields:
-            fel = ET.SubElement(r, "fields")
-            for fname, bit, width in fields:
-                f = ET.SubElement(fel, "field")
-                ET.SubElement(f, "name").text = fname
-                ET.SubElement(f, "bitOffset").text = str(bit)
-                ET.SubElement(f, "bitWidth").text = str(width)
+        name_override = register_namer(member) if register_namer else None
+        add_register(regs_el, unions, member, off, seen=seen, name=name_override)
+    for extra in extra_blocks or []:
+        for member, off, _dim in parse_block(src, extra):
+            name_override = register_namer(member) if register_namer else None
+            add_register(regs_el, unions, member, off, seen=seen, name=name_override)
+    supplement_peripheral(name, regs_el, unions, seen)
+    update_address_block_size(p)
     return p
+
+
+def supplement_peripheral(name, regs_el, unions, seen):
+    """Patch SDK-header omissions that are represented outside the main block
+    struct, while keeping the evidence next to the parser.
+
+    * PDM `hpf_ctrl[CONFIG_MIC_CH_NUM]` is an array with a formula offset comment;
+      expand the two BS2X mic-channel registers explicitly.
+    * PDM FIFO data is not part of `pdm_v150_regs_t`; the SDK operation header
+      exposes `HAL_PDM_V150_FIFO_OFFSET 0x80`.
+    """
+    if name == "PDM":
+        for reg in regs_el.findall("register"):
+            if reg.findtext("name") == "UP_FIFO_ST" and reg.find("access") is None:
+                fields = reg.find("fields")
+                access = ET.Element("access")
+                access.text = "read-only"
+                if fields is None:
+                    reg.append(access)
+                else:
+                    reg.insert(list(reg).index(fields), access)
+        hpf_fields = match_union(unions, "hpf_ctrl")
+        add_register(regs_el, unions, "hpf_ctrl", 0x18, seen=seen, name="HPF_CTRL0",
+                     description="hpf_ctrl channel 0", fields=hpf_fields)
+        add_register(regs_el, unions, "hpf_ctrl", 0x1C, seen=seen, name="HPF_CTRL1",
+                     description="hpf_ctrl channel 1", fields=hpf_fields)
+        add_register(regs_el, unions, "up_fifo_data", 0x80, seen=seen, name="UP_FIFO_DATA",
+                     description="UP FIFO 32-bit PCM sample data window", access="read-only",
+                     fields=[("pcm_word", 0, 32)])
+    elif name == "GADC":
+        # These meanings come from the SDK inline helpers in
+        # hal_adc_v153_regs_op.h:
+        # - hal_afe_adcldo_open/off writes CFG_ANA_4 = 1/0.
+        # - hal_afe_afeldo_open/off writes CFG_ANA_6 = 1/0.
+        # - hal_gadc_node_sel writes the adc_v153_diag_node_t enum to CFG_TST_1.
+        # - hal_gafe_single_sample_get_* reads RPT_GADC_DATA_2/3.
+        ensure_register_fields(regs_el, "CFG_ANA_4", [("cfg_afe_adcldo_en", 0, 1)])
+        ensure_register_fields(regs_el, "CFG_ANA_6", [("cfg_afe_afeldo_en", 0, 1)])
+        ensure_register_fields(regs_el, "CFG_TST_1", [("diag_node", 0, 3)])
+        ensure_register_fields(regs_el, "RPT_GADC_DATA_2", [("sample_data", 0, 18)], access="read-only")
+        ensure_register_fields(regs_el, "RPT_GADC_DATA_3", [("single_sample_done", 0, 1)],
+                               access="read-only")
+    elif name == "ADC_PMU_AFE":
+        # Single-bit release helpers: hal_afe_ana_rstn_release,
+        # hal_afe_dig_clk_release, hal_afe_dig_rst_release.
+        ensure_register_fields(regs_el, "AFE_ADC_RST_N", [("afe_adc_rst_n", 0, 1)])
+        ensure_register_fields(regs_el, "AFE_CLK_EN", [("afe_clk_en", 0, 1)])
+        ensure_register_fields(regs_el, "AFE_SOFT_RST", [("afe_soft_rst", 0, 1)])
+    elif name == "RTC":
+        ensure_register_fields(regs_el, "LOAD_COUNT0", [("load_count0", 0, 32)])
+        ensure_register_fields(regs_el, "LOAD_COUNT1", [("load_count1", 0, 32)])
+        ensure_register_fields(regs_el, "CURRENT_VALUE0", [("current_value0", 0, 32)], access="read-only")
+        ensure_register_fields(regs_el, "CURRENT_VALUE1", [("current_value1", 0, 32)], access="read-only")
+    elif name == "TRNG":
+        ensure_register_fields(regs_el, "TRNG_FIFO_DATA", [("trng_data", 0, 32)], access="read-only")
 
 
 def _usb_split(macro: str, reg_names) -> tuple | None:
@@ -220,17 +402,36 @@ def build_usb(header_path, base, irqs):
                     continue  # overlapping field (e.g. a flag inside a mask) — skip
                 used.append((bit, width))
                 f = ET.SubElement(fel, "field")
-                ET.SubElement(f, "name").text = fname
+                ET.SubElement(f, "name").text = svd_identifier(fname)
                 ET.SubElement(f, "bitOffset").text = str(bit)
                 ET.SubElement(f, "bitWidth").text = str(width)
     return p
 
 
+def _sdk_root():
+    env = os.environ.get("FBB_BS2X_SDK")
+    candidates = []
+    if env:
+        candidates.append(Path(env))
+    candidates.extend([
+        Path("/root/fbb_bs2x"),
+        Path("/Users/sanchuan/Documents/hispark/fbb_bs2x"),
+    ])
+    for c in candidates:
+        if (c / "src/drivers/drivers/hal").exists():
+            return c
+    raise FileNotFoundError("fbb_bs2x SDK not found; set FBB_BS2X_SDK")
+
+
 # BS2X-specific peripherals: (svd name, header rel-path, base, [(irq,val)], desc)
-SDK = "/root/fbb_bs2x/src/drivers/drivers/hal"
-USB_HEADER = ("/root/fbb_bs2x/src/drivers/drivers/driver/usb_unified/controller/"
-              "usb_device/dwc_otgreg.h")
+SDK_ROOT = _sdk_root()
+SDK = str(SDK_ROOT / "src/drivers/drivers/hal")
+USB_HEADER = str(SDK_ROOT / "src/drivers/drivers/driver/usb_unified/controller/"
+                 "usb_device/dwc_otgreg.h")
 USB_BASE = 0x5800_0000  # DWC_USB_PORT1_BASE_ADDR / CONFIG_USBUDC_REG_BASE_ADDRESS
+I2C_HEADER = f"{SDK}/i2c/v151/hal_i2c_v151_regs_def.h"
+RTC_HEADER = f"{SDK}/rtc_unified/v150/hal_rtc_v150_regs_def.h"
+TRNG_HEADER = f"{SDK}/security/trng/hal_trng_v1_regs_def.h"
 SPECIFIC = [
     ("GADC", f"{SDK}/adc/v153/hal_adc_v153_regs_def.h", 0x5703_6000,
      [("GADC_DONE", 28), ("GADC_ALARM", 29)], "13-bit GADC (general ADC, v153)"),
@@ -247,8 +448,95 @@ SPECIFIC = [
 OWNED_IRQS = {28, 29, 38, 44, 46, 88, 89}
 
 
+def build_adc_pmu_afe():
+    return build_peripheral(f"{SDK}/adc/v153/hal_adc_v153_regs_def.h", "ADC_PMU_AFE",
+                            0x5700_8700, [], "ADC PMU AFE power/isolation/reset block",
+                            block_name="adc_pmu_regs")
+
+
+def build_aon_afe():
+    p = ET.Element("peripheral")
+    ET.SubElement(p, "name").text = "AON_AFE"
+    ET.SubElement(p, "description").text = \
+        "AON AFE isolation control used by the BS2X ADC porting layer"
+    ET.SubElement(p, "baseAddress").text = "0x5702C000"
+    ab = ET.SubElement(p, "addressBlock")
+    ET.SubElement(ab, "offset").text = "0x0"
+    ET.SubElement(ab, "size").text = "0x240"
+    ET.SubElement(ab, "usage").text = "registers"
+    regs_el = ET.SubElement(p, "registers")
+    r = ET.SubElement(regs_el, "register")
+    ET.SubElement(r, "name").text = "AFE_ISO"
+    ET.SubElement(r, "description").text = "AFE isolation control at 0x5702C230"
+    ET.SubElement(r, "addressOffset").text = "0x230"
+    ET.SubElement(r, "size").text = "0x20"
+    fel = ET.SubElement(r, "fields")
+    f = ET.SubElement(fel, "field")
+    ET.SubElement(f, "name").text = "afe_iso_en"
+    ET.SubElement(f, "bitOffset").text = "10"
+    ET.SubElement(f, "bitWidth").text = "1"
+    return p
+
+
+def _ic_reg_name(member):
+    return "IC_" + member.upper()
+
+
+def build_i2c_v151(name, base, irqs):
+    return build_peripheral(
+        I2C_HEADER,
+        name,
+        base,
+        irqs,
+        "I2C master controller (DesignWare-compatible v151)",
+        block_name="i2c_v151_regs",
+        register_namer=_ic_reg_name,
+    )
+
+
+def build_rtc_v150():
+    # The SDK's instance base is RTC_BASE + 0x100; `rtc_v150_regs` member comments
+    # still say 1000h/1004h... because they describe the common window. Trust the
+    # C porting table (`rtc_porting_base_addr_get`) and emit instance-local offsets.
+    return build_peripheral(
+        RTC_HEADER,
+        "RTC",
+        0x5702_4100,
+        [("RTC_0", 49), ("RTC_1", 50), ("RTC_2", 51), ("RTC_3", 52)],
+        "RTC v150 instance 0 register block",
+        block_name="rtc_v150_regs",
+        ignore_offsets=True,
+    )
+
+
+def build_trng_v1():
+    return build_peripheral(
+        TRNG_HEADER,
+        "TRNG",
+        0x5200_9000,
+        [("SEC", 70)],
+        "True random number generator (v1)",
+        block_name="trng_regs_v1",
+        sequential_block=True,
+    )
+
+
+def build_shared_variants():
+    """BS2X peripherals that share a name with WS63 blocks but not the layout."""
+    return [
+        build_i2c_v151("I2C0", 0x5208_3000, [("I2C_0", 62)]),
+        build_rtc_v150(),
+        build_trng_v1(),
+    ]
+
+
 def build_all():
-    periphs = [build_peripheral(h, n, b, irqs, d) for (n, h, b, irqs, d) in SPECIFIC]
+    periphs = []
+    for n, h, b, irqs, d in SPECIFIC:
+        extra = ["adc_ana_regs"] if n == "GADC" else None
+        periphs.append(build_peripheral(h, n, b, irqs, d, extra_blocks=extra))
+    periphs.append(build_adc_pmu_afe())
+    periphs.append(build_aon_afe())
     periphs.append(build_usb(USB_HEADER, USB_BASE, [("USB", 89)]))
     return periphs
 

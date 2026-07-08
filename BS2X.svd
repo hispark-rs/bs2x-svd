@@ -33,92 +33,6 @@
         <size>0x0200</size>
         <usage>registers</usage>
       </addressBlock>
-      <registers>
-        <register>
-          <name>BCPU_RESET_STS</name>
-          <description>BCPU reset status register</description>
-          <addressOffset>0x0030</addressOffset>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>bcpu_reset_sts</name>
-              <description>BCPU reset status</description>
-              <bitRange>[31:0]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>MCPU_RESET_STS</name>
-          <description>MCPU reset status register</description>
-          <addressOffset>0x0034</addressOffset>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>mcpu_reset_sts</name>
-              <description>MCPU reset status</description>
-              <bitRange>[31:0]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>RESET_STS_CLEAR</name>
-          <description>Reset status clear register</description>
-          <addressOffset>0x003C</addressOffset>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>rst_sts_clear</name>
-              <description>Write 0xFF to clear all reset status bits</description>
-              <bitRange>[31:0]</bitRange>
-              <access>write-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>AON_CRG_CKEN_CTL</name>
-          <description>AON CRG clock enable control</description>
-          <addressOffset>0x0100</addressOffset>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>wdt_gate</name>
-              <description>WDT clock gate control at bit[4]</description>
-              <bitRange>[4:4]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>CHIP_RESET</name>
-          <description>Chip reset control register</description>
-          <addressOffset>0x0110</addressOffset>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>chip_reset_en</name>
-              <description>Chip reset enable: 1=assert chip reset</description>
-              <bitRange>[2:2]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>AON_SOFT_RST_CTL</name>
-          <description>AON soft reset control</description>
-          <addressOffset>0x0110</addressOffset>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>wdt_soft_rst</name>
-              <description>WDT soft reset at bit[1]</description>
-              <bitRange>[1:1]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-      </registers>
       <interrupt>
         <name>BT_INT0</name>
         <description>BT_INT0 (IRQ 26)</description>
@@ -229,6 +143,93 @@
         <description>TSENSOR (IRQ 87)</description>
         <value>87</value>
       </interrupt>
+      <registers>
+        <register>
+          <name>BCPU_RESET_STS</name>
+          <description>BCPU reset status register</description>
+          <addressOffset>0x0030</addressOffset>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>bcpu_reset_sts</name>
+              <description>BCPU reset status</description>
+              <bitRange>[31:0]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MCPU_RESET_STS</name>
+          <description>MCPU reset status register</description>
+          <addressOffset>0x0034</addressOffset>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>mcpu_reset_sts</name>
+              <description>MCPU reset status</description>
+              <bitRange>[31:0]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>RESET_STS_CLEAR</name>
+          <description>Reset status clear register</description>
+          <addressOffset>0x003C</addressOffset>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>rst_sts_clear</name>
+              <description>Write 0xFF to clear all reset status bits</description>
+              <bitRange>[31:0]</bitRange>
+              <access>write-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>AON_CRG_CKEN_CTL</name>
+          <description>AON CRG clock enable control</description>
+          <addressOffset>0x0100</addressOffset>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>wdt_gate</name>
+              <description>WDT clock gate control at bit[4]</description>
+              <bitRange>[4:4]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CHIP_RESET</name>
+          <description>Chip reset control register</description>
+          <addressOffset>0x0110</addressOffset>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>chip_reset_en</name>
+              <description>Chip reset enable: 1=assert chip reset</description>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>AON_SOFT_RST_CTL</name>
+          <description>AON soft reset control</description>
+          <addressOffset>0x0110</addressOffset>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>wdt_soft_rst</name>
+              <description>WDT soft reset at bit[1]</description>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+      </registers>
     </peripheral>
     <peripheral>
       <name>GPIO0</name>
@@ -239,6 +240,11 @@
         <size>0x1000</size>
         <usage>registers</usage>
       </addressBlock>
+      <interrupt>
+        <name>GPIO_0</name>
+        <description>GPIO_0 (IRQ 34)</description>
+        <value>34</value>
+      </interrupt>
       <registers>
         <register>
           <name>GPIO_SW_OUT</name>
@@ -471,11 +477,6 @@
           </fields>
         </register>
       </registers>
-      <interrupt>
-        <name>GPIO_0</name>
-        <description>GPIO_0 (IRQ 34)</description>
-        <value>34</value>
-      </interrupt>
     </peripheral>
     <peripheral>
       <name>UART0</name>
@@ -486,6 +487,11 @@
         <size>0x1000</size>
         <usage>registers</usage>
       </addressBlock>
+      <interrupt>
+        <name>UART_0</name>
+        <description>UART_0 (IRQ 39)</description>
+        <value>39</value>
+      </interrupt>
       <registers>
         <register>
           <name>INTR_ID</name>
@@ -781,6 +787,7 @@
           <description>FIFO control register</description>
           <addressOffset>0x24</addressOffset>
           <size>16</size>
+          <access>write-only</access>
           <resetValue>0x0000</resetValue>
           <fields>
             <field>
@@ -1229,11 +1236,6 @@
           </fields>
         </register>
       </registers>
-      <interrupt>
-        <name>UART_0</name>
-        <description>UART_0 (IRQ 39)</description>
-        <value>39</value>
-      </interrupt>
     </peripheral>
     <peripheral>
       <name>TIMER</name>
@@ -1244,6 +1246,26 @@
         <size>0x1000</size>
         <usage>registers</usage>
       </addressBlock>
+      <interrupt>
+        <name>TIMER_0</name>
+        <description>TIMER_0 (IRQ 53)</description>
+        <value>53</value>
+      </interrupt>
+      <interrupt>
+        <name>TIMER_1</name>
+        <description>TIMER_1 (IRQ 54)</description>
+        <value>54</value>
+      </interrupt>
+      <interrupt>
+        <name>TIMER_2</name>
+        <description>TIMER_2 (IRQ 55)</description>
+        <value>55</value>
+      </interrupt>
+      <interrupt>
+        <name>TIMER_3</name>
+        <description>TIMER_3 (IRQ 56)</description>
+        <value>56</value>
+      </interrupt>
       <registers>
         <register>
           <name>ABNOR_INTR_RAW</name>
@@ -1383,24 +1405,24 @@
             </field>
             <field>
               <name>mode</name>
-              <description>Timer mode: 00=free running; 01=one-shot; 10=periodic</description>
+              <description>Timer mode (TIMER_V150, per vendor control_reg_mode_v150_t): 0=one-shot; 1=periodic; 3=free-run (2 is a one-shot alias)</description>
               <bitRange>[2:1]</bitRange>
               <access>read-write</access>
               <enumeratedValues>
                 <enumeratedValue>
-                  <name>FreeRunning</name>
-                  <description>Free-running mode</description>
-                  <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
                   <name>OneShot</name>
                   <description>One-shot mode</description>
-                  <value>1</value>
+                  <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Periodic</name>
                   <description>Periodic mode</description>
-                  <value>2</value>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>FreeRun</name>
+                  <description>Free-running mode</description>
+                  <value>3</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
@@ -1415,6 +1437,18 @@
               <description>Reset FSM: 1=reset timer FSM</description>
               <bitRange>[4:4]</bitRange>
               <access>write-only</access>
+            </field>
+            <field>
+              <name>cnt_req</name>
+              <description>Current-count latch request (TIMER_V150): write 1 to snapshot the live down-counter into the current-value register; the HW asserts cnt_lock when the snapshot is ready. Required to read a fresh count on silicon (the current-value register is a latch, not a live counter).</description>
+              <bitRange>[5:5]</bitRange>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>cnt_lock</name>
+              <description>Current-count latch valid (TIMER_V150): set by HW after a cnt_req snapshot completes; poll until 1 before reading the current-value register.</description>
+              <bitRange>[6:6]</bitRange>
+              <access>read-only</access>
             </field>
           </fields>
         </register>
@@ -1455,26 +1489,6 @@
           </fields>
         </register>
       </registers>
-      <interrupt>
-        <name>TIMER_0</name>
-        <description>TIMER_0 (IRQ 53)</description>
-        <value>53</value>
-      </interrupt>
-      <interrupt>
-        <name>TIMER_1</name>
-        <description>TIMER_1 (IRQ 54)</description>
-        <value>54</value>
-      </interrupt>
-      <interrupt>
-        <name>TIMER_2</name>
-        <description>TIMER_2 (IRQ 55)</description>
-        <value>55</value>
-      </interrupt>
-      <interrupt>
-        <name>TIMER_3</name>
-        <description>TIMER_3 (IRQ 56)</description>
-        <value>56</value>
-      </interrupt>
     </peripheral>
     <peripheral>
       <name>WDT</name>
@@ -1785,937 +1799,6 @@
       </registers>
     </peripheral>
     <peripheral>
-      <name>I2C0</name>
-      <description>I2C0 master controller (DesignWare SSI, IP v151)</description>
-      <baseAddress>0x52083000</baseAddress>
-      <interrupt>
-        <name>I2C_0</name>
-        <description>I2C_0 (IRQ 62)</description>
-        <value>62</value>
-      </interrupt>
-      <addressBlock>
-        <offset>0x0000</offset>
-        <size>0x0100</size>
-        <usage>registers</usage>
-      </addressBlock>
-      <registers>
-        <register>
-          <name>IC_CON</name>
-          <description>IC_CON</description>
-          <addressOffset>0x00</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>master_mode</name>
-              <description>1=master</description>
-              <bitRange>[0:0]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>speed</name>
-              <description>1=SS 2=FS 3=HS</description>
-              <bitRange>[2:1]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>ic_10bitaddr_slave</name>
-              <bitRange>[3:3]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>ic_10bitaddr_master</name>
-              <bitRange>[4:4]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>ic_restart_en</name>
-              <bitRange>[5:5]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>ic_slave_disable</name>
-              <bitRange>[6:6]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>stop_det_ifaddressed</name>
-              <bitRange>[7:7]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>tx_empty_ctrl</name>
-              <bitRange>[8:8]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>rx_fifo_full_hld_ctrl</name>
-              <bitRange>[9:9]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>stop_det_if_master_active</name>
-              <bitRange>[10:10]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>bus_clear_feature_ctrl</name>
-              <bitRange>[11:11]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_ENABLE</name>
-          <description>IC_ENABLE</description>
-          <addressOffset>0x04</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>enable</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>abort</name>
-              <bitRange>[1:1]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>tx_cmd_block</name>
-              <bitRange>[2:2]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>sda_stuck_recovery_enable</name>
-              <bitRange>[3:3]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_TAR</name>
-          <description>IC_TAR</description>
-          <addressOffset>0x10</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>ic_tar</name>
-              <description>target address</description>
-              <bitRange>[9:0]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>gc_or_start</name>
-              <bitRange>[10:10]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>special</name>
-              <bitRange>[11:11]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>master_10bitaddr</name>
-              <bitRange>[12:12]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>device_id</name>
-              <bitRange>[13:13]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_SAR</name>
-          <description>IC_SAR</description>
-          <addressOffset>0x14</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>ic_sar</name>
-              <description>slave address</description>
-              <bitRange>[9:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_HS_MADDR</name>
-          <description>IC_HS_MADDR</description>
-          <addressOffset>0x18</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>ic_hs_mar</name>
-              <bitRange>[2:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_DATA_CMD</name>
-          <description>IC_DATA_CMD</description>
-          <addressOffset>0x1C</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>dat</name>
-              <description>data byte</description>
-              <bitRange>[7:0]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>cmd</name>
-              <description>1=read 0=write</description>
-              <bitRange>[8:8]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>stop</name>
-              <bitRange>[9:9]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>restart</name>
-              <bitRange>[10:10]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>first_data_byte</name>
-              <bitRange>[11:11]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_SS_SCL_HCNT</name>
-          <description>IC_SS_SCL_HCNT</description>
-          <addressOffset>0x30</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>cnt</name>
-              <bitRange>[15:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_SS_SCL_LCNT</name>
-          <description>IC_SS_SCL_LCNT</description>
-          <addressOffset>0x34</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>cnt</name>
-              <bitRange>[15:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_FS_SCL_HCNT</name>
-          <description>IC_FS_SCL_HCNT</description>
-          <addressOffset>0x3C</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>cnt</name>
-              <bitRange>[15:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_FS_SCL_LCNT</name>
-          <description>IC_FS_SCL_LCNT</description>
-          <addressOffset>0x40</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>cnt</name>
-              <bitRange>[15:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_HS_SCL_HCNT</name>
-          <description>IC_HS_SCL_HCNT</description>
-          <addressOffset>0x44</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>cnt</name>
-              <bitRange>[15:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_HS_SCL_LCNT</name>
-          <description>IC_HS_SCL_LCNT</description>
-          <addressOffset>0x48</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>cnt</name>
-              <bitRange>[15:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_RX_TL</name>
-          <description>IC_RX_TL</description>
-          <addressOffset>0x50</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>rx_tl</name>
-              <bitRange>[7:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_TX_TL</name>
-          <description>IC_TX_TL</description>
-          <addressOffset>0x54</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>tx_tl</name>
-              <bitRange>[7:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_SLV_DATA_NACK_ONLY</name>
-          <description>IC_SLV_DATA_NACK_ONLY</description>
-          <addressOffset>0x58</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>nack</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_STATUS</name>
-          <description>IC_STATUS</description>
-          <addressOffset>0x60</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>activity</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>tfnf</name>
-              <description>TX not full</description>
-              <bitRange>[1:1]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>tfe</name>
-              <description>TX empty</description>
-              <bitRange>[2:2]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>rfne</name>
-              <description>RX not empty</description>
-              <bitRange>[3:3]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>rff</name>
-              <description>RX full</description>
-              <bitRange>[4:4]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>mst_activity</name>
-              <bitRange>[5:5]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>slv_activity</name>
-              <bitRange>[6:6]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_TXFLR</name>
-          <description>IC_TXFLR</description>
-          <addressOffset>0x64</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>txflr</name>
-              <bitRange>[5:0]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_RXFLR</name>
-          <description>IC_RXFLR</description>
-          <addressOffset>0x68</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>rxflr</name>
-              <bitRange>[5:0]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_SDA_HOLD</name>
-          <description>IC_SDA_HOLD</description>
-          <addressOffset>0x6C</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>sda_rx_hold</name>
-              <bitRange>[7:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_SDA_HOLD_TX</name>
-          <description>IC_SDA_HOLD_TX</description>
-          <addressOffset>0x70</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>sda_tx_hold</name>
-              <bitRange>[15:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_TX_FLUSH_CNT</name>
-          <description>IC_TX_FLUSH_CNT</description>
-          <addressOffset>0x74</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>cnt</name>
-              <bitRange>[15:0]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_TX_ABRT_SOURCE</name>
-          <description>IC_TX_ABRT_SOURCE</description>
-          <addressOffset>0x78</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>user_abrt</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>sda_stuck_at_low</name>
-              <bitRange>[1:1]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>device_noack</name>
-              <bitRange>[2:2]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>device_slvaddr_noack</name>
-              <bitRange>[3:3]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>abrt_device_write</name>
-              <bitRange>[4:4]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_TX_ABRT_SLV_INTX</name>
-          <description>IC_TX_ABRT_SLV_INTX</description>
-          <addressOffset>0x7C</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>addr_7b_noack</name>
-              <description>7-bit address NACK (bus scan)</description>
-              <bitRange>[0:0]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>addr1_10b_noack</name>
-              <bitRange>[1:1]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>addr2_10b_noack</name>
-              <bitRange>[2:2]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>txdata_noack</name>
-              <bitRange>[3:3]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>gcall_noack</name>
-              <bitRange>[4:4]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>lost</name>
-              <description>arbitration lost</description>
-              <bitRange>[12:12]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_ACK_GENERAL_CALL</name>
-          <description>IC_ACK_GENERAL_CALL</description>
-          <addressOffset>0x80</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>ack_gen_call</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_ENABLE_STATUS</name>
-          <description>IC_ENABLE_STATUS</description>
-          <addressOffset>0x84</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>ic_en</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>slv_disable_while_busy</name>
-              <bitRange>[1:1]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>slv_rx_data_lost</name>
-              <bitRange>[2:2]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_DMA_CR</name>
-          <description>IC_DMA_CR</description>
-          <addressOffset>0xA0</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>rdmae</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>tdmae</name>
-              <bitRange>[1:1]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_DMA_TDLR</name>
-          <description>IC_DMA_TDLR</description>
-          <addressOffset>0xA4</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>dmatdl</name>
-              <bitRange>[5:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_DMA_RDLR</name>
-          <description>IC_DMA_RDLR</description>
-          <addressOffset>0xA8</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>dmardl</name>
-              <bitRange>[5:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_SDA_SETUP</name>
-          <description>IC_SDA_SETUP</description>
-          <addressOffset>0xAC</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>sda_setup</name>
-              <bitRange>[7:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_INTR_MASK</name>
-          <description>IC_INTR_MASK</description>
-          <addressOffset>0xB0</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>rx_under</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>rx_over</name>
-              <bitRange>[1:1]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>rx_full</name>
-              <bitRange>[2:2]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>tx_over</name>
-              <bitRange>[3:3]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>tx_empty</name>
-              <bitRange>[4:4]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>rd_req</name>
-              <bitRange>[5:5]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>tx_abrt</name>
-              <bitRange>[6:6]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>rx_done</name>
-              <bitRange>[7:7]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>activity</name>
-              <bitRange>[8:8]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>stop_det</name>
-              <bitRange>[9:9]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>start_det</name>
-              <bitRange>[10:10]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>gen_call</name>
-              <bitRange>[11:11]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>restart_det</name>
-              <bitRange>[12:12]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_INTR_STAT</name>
-          <description>IC_INTR_STAT</description>
-          <addressOffset>0xB4</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>rx_under</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>rx_over</name>
-              <bitRange>[1:1]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>rx_full</name>
-              <bitRange>[2:2]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>tx_over</name>
-              <bitRange>[3:3]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>tx_empty</name>
-              <bitRange>[4:4]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>rd_req</name>
-              <bitRange>[5:5]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>tx_abrt</name>
-              <bitRange>[6:6]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>rx_done</name>
-              <bitRange>[7:7]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>activity</name>
-              <bitRange>[8:8]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>stop_det</name>
-              <bitRange>[9:9]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>start_det</name>
-              <bitRange>[10:10]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>gen_call</name>
-              <bitRange>[11:11]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>restart_det</name>
-              <bitRange>[12:12]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_RAW_INTR_STAT</name>
-          <description>IC_RAW_INTR_STAT</description>
-          <addressOffset>0xB8</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>rx_under</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>rx_over</name>
-              <bitRange>[1:1]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>rx_full</name>
-              <bitRange>[2:2]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>tx_over</name>
-              <bitRange>[3:3]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>tx_empty</name>
-              <bitRange>[4:4]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>rd_req</name>
-              <bitRange>[5:5]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>tx_abrt</name>
-              <bitRange>[6:6]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>rx_done</name>
-              <bitRange>[7:7]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>activity</name>
-              <bitRange>[8:8]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>stop_det</name>
-              <bitRange>[9:9]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>start_det</name>
-              <bitRange>[10:10]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>gen_call</name>
-              <bitRange>[11:11]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>restart_det</name>
-              <bitRange>[12:12]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_INTR_STAT_ALL</name>
-          <description>IC_INTR_STAT_ALL</description>
-          <addressOffset>0xBC</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>stat</name>
-              <bitRange>[12:0]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_CLR_INTR</name>
-          <description>IC_CLR_INTR</description>
-          <addressOffset>0xC0</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>clr</name>
-              <description>read-to-clear all</description>
-              <bitRange>[0:0]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>IC_CLR_INT</name>
-          <description>IC_CLR_INT</description>
-          <addressOffset>0xC4</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>clr</name>
-              <description>read-to-clear combined</description>
-              <bitRange>[0:0]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-      </registers>
-    </peripheral>
-    <peripheral>
       <name>SPI0</name>
       <description>SPI0 master/slave controller (SSI v151)</description>
       <baseAddress>0x52087000</baseAddress>
@@ -2724,6 +1807,11 @@
         <size>0x0100</size>
         <usage>registers</usage>
       </addressBlock>
+      <interrupt>
+        <name>SPI_M_S_0</name>
+        <description>SPI_M_S_0 (IRQ 59)</description>
+        <value>59</value>
+      </interrupt>
       <registers>
         <register>
           <name>SPI_ER</name>
@@ -3144,50 +2232,49 @@
         </register>
         <register>
           <name>SPI_WSR</name>
-          <description>Status register</description>
+          <description>Status register. Bit layout matches the HiSilicon SSI v151
+            silicon (vendor hal_spi_v151_regs_def.h spi_wsr_data), NOT the textbook
+            DesignWare SR: the FIFO/busy flags are spread out, not packed in bits
+            0..6. Verified on WS63 silicon 2026-06-14 (idle reads 0x1800 = TXFNF |
+            TXFE).</description>
           <addressOffset>0xE4</addressOffset>
-          <resetValue>0x00000006</resetValue>
+          <resetValue>0x00001800</resetValue>
           <fields>
             <field>
-              <name>busy</name>
-              <description>SPI busy flag</description>
+              <name>dcol</name>
+              <description>Data collision error (master): the last transfer was
+                halted because another master asserted ss_in_n. Cleared on read.</description>
               <bitRange>[0:0]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>txfnf</name>
-              <description>TX FIFO not full</description>
-              <bitRange>[1:1]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>txfe</name>
-              <description>TX FIFO empty</description>
-              <bitRange>[2:2]</bitRange>
               <access>read-only</access>
             </field>
             <field>
               <name>rxfne</name>
               <description>RX FIFO not empty</description>
-              <bitRange>[3:3]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>rxfo</name>
-              <description>RX FIFO overflow</description>
               <bitRange>[4:4]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>txfo</name>
-              <description>TX FIFO overflow</description>
+              <name>rxff</name>
+              <description>RX FIFO full</description>
               <bitRange>[5:5]</bitRange>
               <access>read-only</access>
             </field>
             <field>
-              <name>dcm</name>
-              <description>Data conflict mask</description>
-              <bitRange>[6:6]</bitRange>
+              <name>txfnf</name>
+              <description>TX FIFO not full</description>
+              <bitRange>[11:11]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>txfe</name>
+              <description>TX FIFO empty</description>
+              <bitRange>[12:12]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>busy</name>
+              <description>SPI busy flag (serial transfer in progress)</description>
+              <bitRange>[15:15]</bitRange>
               <access>read-only</access>
             </field>
           </fields>
@@ -3225,11 +2312,6 @@
           </fields>
         </register>
       </registers>
-      <interrupt>
-        <name>SPI_M_S_0</name>
-        <description>SPI_M_S_0 (IRQ 59)</description>
-        <value>59</value>
-      </interrupt>
     </peripheral>
     <peripheral>
       <name>PWM</name>
@@ -3240,6 +2322,16 @@
         <size>0x1000</size>
         <usage>registers</usage>
       </addressBlock>
+      <interrupt>
+        <name>PWM_0</name>
+        <description>PWM_0 (IRQ 71)</description>
+        <value>71</value>
+      </interrupt>
+      <interrupt>
+        <name>PWM_1</name>
+        <description>PWM_1 (IRQ 72)</description>
+        <value>72</value>
+      </interrupt>
       <registers>
         <register>
           <name>PWM_SEL0</name>
@@ -5020,16 +4112,6 @@
           </fields>
         </register>
       </registers>
-      <interrupt>
-        <name>PWM_0</name>
-        <description>PWM_0 (IRQ 71)</description>
-        <value>71</value>
-      </interrupt>
-      <interrupt>
-        <name>PWM_1</name>
-        <description>PWM_1 (IRQ 72)</description>
-        <value>72</value>
-      </interrupt>
     </peripheral>
     <peripheral>
       <name>DMA</name>
@@ -5528,161 +4610,893 @@
       </registers>
     </peripheral>
     <peripheral>
-      <name>RTC</name>
-      <description>RTC instance 0 (rtc_unified IP v150)</description>
-      <baseAddress>0x57024100</baseAddress>
+      <name>I2C0</name>
+      <description>I2C master controller (DesignWare-compatible v151)</description>
+      <baseAddress>0x52083000</baseAddress>
       <addressBlock>
-        <offset>0x0000</offset>
-        <size>0x0020</size>
+        <offset>0x0</offset>
+        <size>0xD0</size>
         <usage>registers</usage>
       </addressBlock>
+      <interrupt>
+        <name>I2C_0</name>
+        <description>I2C_0 (IRQ 62)</description>
+        <value>62</value>
+      </interrupt>
       <registers>
         <register>
-          <name>LOAD_COUNT0</name>
-          <description>LOAD_COUNT0</description>
-          <addressOffset>0x00</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
+          <name>IC_CON</name>
+          <description>con</description>
+          <addressOffset>0x0</addressOffset>
+          <size>0x20</size>
           <fields>
             <field>
-              <name>load_count0</name>
-              <bitRange>[31:0]</bitRange>
-              <access>read-write</access>
+              <name>master_mode</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>speed</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>ic_10bitaddr_slave</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ic_10bitaddr_master</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ic_restart_en</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ic_slave_disable</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>stop_det_ifaddressed</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>tx_empty_ctrl</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>rx_fifo_full_hld_ctrl</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>stop_det_if_master_active</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>bus_clear_feature_ctrl</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>optional_sar_ctrl</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>smbus_slave_quick_en</name>
+              <bitOffset>17</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>smbus_arp_en</name>
+              <bitOffset>18</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>smbus_persistent_slv_addr_en</name>
+              <bitOffset>19</bitOffset>
+              <bitWidth>1</bitWidth>
             </field>
           </fields>
         </register>
         <register>
-          <name>LOAD_COUNT1</name>
-          <description>LOAD_COUNT1</description>
-          <addressOffset>0x04</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>load_count1</name>
-              <bitRange>[31:0]</bitRange>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>CURRENT_VALUE0</name>
-          <description>CURRENT_VALUE0</description>
-          <addressOffset>0x08</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>current_value0</name>
-              <bitRange>[31:0]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>CURRENT_VALUE1</name>
-          <description>CURRENT_VALUE1</description>
-          <addressOffset>0x0C</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <fields>
-            <field>
-              <name>current_value1</name>
-              <bitRange>[31:0]</bitRange>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>CONTROL</name>
-          <description>CONTROL</description>
-          <addressOffset>0x10</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
+          <name>IC_ENABLE</name>
+          <description>enable</description>
+          <addressOffset>0x4</addressOffset>
+          <size>0x20</size>
           <fields>
             <field>
               <name>enable</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-write</access>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
             </field>
             <field>
-              <name>mode</name>
-              <bitRange>[2:1]</bitRange>
-              <access>read-write</access>
+              <name>abort</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
             </field>
             <field>
-              <name>int_mask</name>
-              <bitRange>[3:3]</bitRange>
-              <access>read-write</access>
+              <name>tx_cmd_block</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
             </field>
             <field>
-              <name>rstfsm</name>
-              <bitRange>[4:4]</bitRange>
-              <access>read-write</access>
+              <name>sda_stuck_recovery_enable</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
             </field>
             <field>
-              <name>cnt_req</name>
-              <bitRange>[5:5]</bitRange>
-              <access>read-write</access>
+              <name>smbus_clk_reset</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
             </field>
             <field>
-              <name>cnt_lock</name>
-              <bitRange>[6:6]</bitRange>
-              <access>read-only</access>
+              <name>smbus_suspend_en</name>
+              <bitOffset>17</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>smbus_alert_en</name>
+              <bitOffset>18</bitOffset>
+              <bitWidth>1</bitWidth>
             </field>
           </fields>
         </register>
         <register>
-          <name>EOI_REN</name>
-          <description>EOI_REN</description>
+          <name>IC_TAR</name>
+          <description>tar</description>
+          <addressOffset>0x10</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ic_tar</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>10</bitWidth>
+            </field>
+            <field>
+              <name>gc_or_start</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>special</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>master_10bitaddr</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>device_id</name>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>smbus_quick_cmd</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SAR</name>
+          <description>sar</description>
           <addressOffset>0x14</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
           <fields>
             <field>
-              <name>eoi</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-only</access>
+              <name>ic_sar</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>10</bitWidth>
             </field>
           </fields>
         </register>
         <register>
-          <name>RAW_INTR</name>
-          <description>RAW_INTR</description>
+          <name>IC_HS_MADDR</name>
+          <description>hs_maddr</description>
           <addressOffset>0x18</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
           <fields>
             <field>
-              <name>int_status</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-only</access>
+              <name>ic_hs_mar</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>3</bitWidth>
             </field>
           </fields>
         </register>
         <register>
-          <name>INTR</name>
-          <description>INTR</description>
+          <name>IC_DATA_CMD</name>
+          <description>data_cmd</description>
           <addressOffset>0x1C</addressOffset>
-          <size>32</size>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
           <fields>
             <field>
-              <name>int_status</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-only</access>
+              <name>dat</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+            <field>
+              <name>cmd</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>stop</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>restart</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>first_data_byte</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SS_SCL_HCNT</name>
+          <description>ss_scl_hcnt</description>
+          <addressOffset>0x30</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ic_ss_scl_hcnt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SS_SCL_LCNT</name>
+          <description>ss_scl_lcnt</description>
+          <addressOffset>0x34</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ic_ss_scl_lcnt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_FS_SCL_HCNT</name>
+          <description>fs_scl_hcnt</description>
+          <addressOffset>0x3C</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ic_fs_scl_hcnt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_FS_SCL_LCNT</name>
+          <description>fs_scl_lcnt</description>
+          <addressOffset>0x40</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ic_fs_scl_lcnt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_HS_SCL_HCNT</name>
+          <description>hs_scl_hcnt</description>
+          <addressOffset>0x44</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ic_hs_scl_hcnt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_HS_SCL_LCNT</name>
+          <description>hs_scl_lcnt</description>
+          <addressOffset>0x48</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ic_hs_scl_lcnt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_RX_TL</name>
+          <description>rx_tl</description>
+          <addressOffset>0x50</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>rx_tl</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_TX_TL</name>
+          <description>tx_tl</description>
+          <addressOffset>0x54</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>tx_tl</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SLAVE_DATA_NACK_ONLY</name>
+          <description>slave_data_nack_only</description>
+          <addressOffset>0x58</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>IC_STATUS</name>
+          <description>status</description>
+          <addressOffset>0x60</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>activity</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>tfnf</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>tfe</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>rfne</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>rff</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>mst_activity</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>slv_activity</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>mst_hold_tx_fifo_empty</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>mst_hold_rx_fifo_full</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>slv_hold_tx_fifo_empty</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>slv_hold_rx_fifo_full</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>sda_stuck_not_recovered</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>smbus_quick_cmd_bit</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>smbus_slave_addr_valid</name>
+              <bitOffset>17</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>smbus_slave_addr_resolved</name>
+              <bitOffset>18</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>smbus_suspend_status</name>
+              <bitOffset>19</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>smbus_alert_status</name>
+              <bitOffset>20</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_TXFLR</name>
+          <description>txflr</description>
+          <addressOffset>0x64</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>IC_RXFLR</name>
+          <description>rxflr</description>
+          <addressOffset>0x68</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>IC_SDA_RX_HOLD</name>
+          <description>sda_rx_hold</description>
+          <addressOffset>0x6C</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>sda_rx_hold</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SDA_TX_HOLD</name>
+          <description>sda_tx_hold</description>
+          <addressOffset>0x70</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>sda_tx_hold</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_TX_FLUSH_CNT</name>
+          <description>tx_flush_cnt</description>
+          <addressOffset>0x74</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>tx_flush_cnt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>9</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_TX_ABRT_SOURCE</name>
+          <description>tx_abrt_source</description>
+          <addressOffset>0x78</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>user_abrt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>sda_stuck_at_low</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>device_noack</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>device_slvaddr_noack</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>abrt_device_write</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_TX_ABRT_SLV_INTX</name>
+          <description>tx_abrt_slv_intx</description>
+          <addressOffset>0x7C</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>IC_ACK_GENERAL_CALL</name>
+          <description>ack_general_call</description>
+          <addressOffset>0x80</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>IC_ENABLE_STATUS</name>
+          <description>enable_status</description>
+          <addressOffset>0x84</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ic_en</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>slv_disable_whlle_busy</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>slv_rx_data_lost</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_DMA_CR</name>
+          <description>dma_cr</description>
+          <addressOffset>0xA0</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>rdmae</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>tdmae</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_DMA_TDLR</name>
+          <description>dma_tdlr</description>
+          <addressOffset>0xA4</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>IC_DMA_RDLR</name>
+          <description>dma_rdlr</description>
+          <addressOffset>0xA8</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>IC_SDA_SETUP</name>
+          <description>sda_setup</description>
+          <addressOffset>0xAC</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>sda_setup</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_INTR_MASK</name>
+          <description>intr_mask</description>
+          <addressOffset>0xB0</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>m_rx_under</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_rx_over</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_rx_full</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_tx_over</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_tx_empty</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_rd_req</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_tx_abrt</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_rx_done</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_activity</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_stop_det</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_start_det</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_gen_call</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_restart_det</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_master_on_hold</name>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>m_scl_stuck_at_low</name>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_INTR_STAT</name>
+          <description>intr_stat</description>
+          <addressOffset>0xB4</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>r_rx_under</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_rx_over</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_rx_full</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_tx_over</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_tx_empty</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_rd_req</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_tx_abrt</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_rx_done</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_activity</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_stop_det</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_start_det</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_gen_call</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_restart_det</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_master_on_hold</name>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>r_scl_stuck_at_low</name>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_RAW_INTR_STAT</name>
+          <description>raw_intr_stat</description>
+          <addressOffset>0xB8</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>rx_under</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>rx_over</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>rx_full</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>tx_over</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>tx_empty</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>rd_req</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>tx_abrt</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>rx_done</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>activity</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>stop_det</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>start_det</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>gen_call</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>restart_det</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>master_on_hold</name>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>scl_stuck_at_low</name>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_INTR_STAT_ALL</name>
+          <description>intr_stat_all</description>
+          <addressOffset>0xBC</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>IC_CLR_INTR</name>
+          <description>clr_intr</description>
+          <addressOffset>0xC0</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>IC_CLR_INT</name>
+          <description>clr_int</description>
+          <addressOffset>0xC4</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>clr_int</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
             </field>
           </fields>
         </register>
       </registers>
+    </peripheral>
+    <peripheral>
+      <name>RTC</name>
+      <description>RTC v150 instance 0 register block</description>
+      <baseAddress>0x57024100</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x20</size>
+        <usage>registers</usage>
+      </addressBlock>
       <interrupt>
         <name>RTC_0</name>
         <description>RTC_0 (IRQ 49)</description>
@@ -5703,164 +5517,767 @@
         <description>RTC_3 (IRQ 52)</description>
         <value>52</value>
       </interrupt>
-    </peripheral>
-    <peripheral>
-      <name>TRNG</name>
-      <description>True Random Number Generator</description>
-      <baseAddress>0x52009000</baseAddress>
-      <addressBlock>
-        <offset>0x0000</offset>
-        <size>0x1000</size>
-        <usage>registers</usage>
-      </addressBlock>
       <registers>
         <register>
-          <name>TRNG_CTRL</name>
-          <description>TRNG_CTRL</description>
-          <addressOffset>0x00</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
+          <name>LOAD_COUNT0</name>
+          <description>load_count0</description>
+          <addressOffset>0x0</addressOffset>
+          <size>0x20</size>
           <fields>
             <field>
-              <name>health_test_en</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>online_test_en</name>
-              <bitRange>[1:1]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>post_proc_en</name>
-              <bitRange>[2:2]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>rnd_chk_en</name>
-              <bitRange>[3:3]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>lfsr_reseed_en</name>
-              <bitRange>[4:4]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>private_en</name>
-              <bitRange>[5:5]</bitRange>
-              <access>read-write</access>
+              <name>load_count0</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
             </field>
           </fields>
         </register>
         <register>
-          <name>TRNG_RING_EN</name>
-          <description>TRNG_RING_EN</description>
-          <addressOffset>0x24</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
+          <name>LOAD_COUNT1</name>
+          <description>load_count1</description>
+          <addressOffset>0x4</addressOffset>
+          <size>0x20</size>
           <fields>
             <field>
-              <name>ro_en</name>
-              <bitRange>[0:0]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>tero_en</name>
-              <bitRange>[1:1]</bitRange>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>fro_en</name>
-              <bitRange>[2:2]</bitRange>
-              <access>read-write</access>
+              <name>load_count1</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
             </field>
           </fields>
         </register>
         <register>
-          <name>TRNG_FIFO_DATA</name>
-          <description>TRNG FIFO data output register</description>
-          <addressOffset>0x0100</addressOffset>
-          <resetValue>0x00000000</resetValue>
+          <name>CURRENT_VALUE0</name>
+          <description>current_value0</description>
+          <addressOffset>0x8</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
           <fields>
             <field>
-              <name>trng_data</name>
-              <description>Random data (read to get random number)</description>
-              <bitRange>[31:0]</bitRange>
-              <access>read-only</access>
+              <name>current_value0</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
             </field>
           </fields>
         </register>
         <register>
-          <name>TRNG_FIFO_READY</name>
-          <description>TRNG FIFO ready status</description>
-          <addressOffset>0x0104</addressOffset>
-          <resetValue>0x00000000</resetValue>
+          <name>CURRENT_VALUE1</name>
+          <description>current_value1</description>
+          <addressOffset>0xC</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
           <fields>
             <field>
-              <name>trng_data_ready</name>
-              <description>Data ready: 1=data available in FIFO</description>
-              <bitRange>[0:0]</bitRange>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>trng_done</name>
-              <description>TRNG generation done</description>
-              <bitRange>[1:1]</bitRange>
-              <access>read-only</access>
+              <name>current_value1</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
             </field>
           </fields>
         </register>
         <register>
-          <name>TRNG_DATA_ST</name>
-          <description>TRNG data status register</description>
-          <addressOffset>0x0108</addressOffset>
-          <resetValue>0x00000000</resetValue>
+          <name>CONTROL</name>
+          <description>control</description>
+          <addressOffset>0x10</addressOffset>
+          <size>0x20</size>
           <fields>
             <field>
-              <name>data_st</name>
-              <description>Data status</description>
-              <bitRange>[31:0]</bitRange>
-              <access>read-only</access>
+              <name>enable</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>mode</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>int_mask</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>rstfsm</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cnt_req</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cnt_lock</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
             </field>
           </fields>
         </register>
         <register>
-          <name>TRNG_FRO_SAMPLE_CLK_SEL</name>
-          <description>TRNG FRO sample clock select</description>
-          <addressOffset>0x0174</addressOffset>
-          <resetValue>0x00000000</resetValue>
+          <name>EOI_REN</name>
+          <description>eoi_ren</description>
+          <addressOffset>0x14</addressOffset>
+          <size>0x20</size>
           <fields>
             <field>
-              <name>fro_sample_clk_sel</name>
-              <description>FRO sample clock select: 0=inner; 1=external</description>
-              <bitRange>[0:0]</bitRange>
-              <access>read-write</access>
+              <name>eoi</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
             </field>
           </fields>
         </register>
         <register>
-          <name>TRNG_FRO_DIV_CNT</name>
-          <description>TRNG FRO divider count</description>
-          <addressOffset>0x0178</addressOffset>
-          <resetValue>0x00000000</resetValue>
+          <name>RAW_INTR</name>
+          <description>raw_intr</description>
+          <addressOffset>0x18</addressOffset>
+          <size>0x20</size>
           <fields>
             <field>
-              <name>fro_div_cnt</name>
-              <description>FRO divider count (default 0x1b)</description>
-              <bitRange>[7:0]</bitRange>
-              <access>read-write</access>
+              <name>int_status</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR</name>
+          <description>intr</description>
+          <addressOffset>0x1C</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>int_status</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
             </field>
           </fields>
         </register>
       </registers>
+    </peripheral>
+    <peripheral>
+      <name>TRNG</name>
+      <description>True random number generator (v1)</description>
+      <baseAddress>0x52009000</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x210</size>
+        <usage>registers</usage>
+      </addressBlock>
       <interrupt>
         <name>SEC</name>
         <description>SEC (IRQ 70)</description>
         <value>70</value>
       </interrupt>
+      <registers>
+        <register>
+          <name>TRNG_CTRL</name>
+          <description>trng_ctrl</description>
+          <addressOffset>0x0</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>health_test_en</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>online_test_en</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>post_proc_en</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>rnd_chk_en</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>lfsr_reseed_en</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>private_en</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_SRC_SEL</name>
+          <description>trng_src_sel</description>
+          <addressOffset>0x4</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>trng_sel</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_FRO_SEL</name>
+          <description>trng_fro_sel</description>
+          <addressOffset>0x8</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>fro_sel</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>5</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_ALL_REG_LOCK</name>
+          <description>trng_all_reg_lock</description>
+          <addressOffset>0x10</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>trng_all_reg_lock</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_LOW_POWER_ENABLE</name>
+          <description>trng_low_power_enable</description>
+          <addressOffset>0x20</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>trng_low_power_enable</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_RING_EN</name>
+          <description>trng_ring_en</description>
+          <addressOffset>0x24</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ro_en</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>tero_en</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>fro_en</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_RO_TIMER_CNT</name>
+          <description>trng_ro_timer_cnt</description>
+          <addressOffset>0x30</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ro_timer_cnt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_TERO_BIT_SEL</name>
+          <description>trng_tero_bit_sel</description>
+          <addressOffset>0x40</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>tero_bit_sel</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_TERO_VCTR_CFG</name>
+          <description>trng_tero_vctr_cfg</description>
+          <addressOffset>0x44</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>tero_vctr_low_cfg</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+            <field>
+              <name>tero_vctr_cfg</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_ONLINE_TEST_FAIL_CK_TH</name>
+          <description>trng_online_test_fail_ck_th</description>
+          <addressOffset>0x60</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>online_test_fail_ck_cnt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_MONOBIT_TEST_CK_TH</name>
+          <description>trng_monobit_test_ck_th</description>
+          <addressOffset>0x64</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>mono_ck_low</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>7</bitWidth>
+            </field>
+            <field>
+              <name>mono_ck_hig</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>7</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_LONG_RUN_TEST_CK_TH</name>
+          <description>trng_long_run_test_ck_th</description>
+          <addressOffset>0x68</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>long_run_hig</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_RUN1_TEST_CK_TH</name>
+          <description>trng_run1_test_ck_th</description>
+          <addressOffset>0x6C</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>run_0_ck_low</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>7</bitWidth>
+            </field>
+            <field>
+              <name>run_0_ck_hig</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>7</bitWidth>
+            </field>
+            <field>
+              <name>run_1_ck_low</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>7</bitWidth>
+            </field>
+            <field>
+              <name>run_1_ck_hig</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>7</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_RUN2_TEST_CK_TH</name>
+          <description>trng_run2_test_ck_th</description>
+          <addressOffset>0x70</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>run_00_ck_low</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+            <field>
+              <name>run_00_ck_hig</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+            <field>
+              <name>run_11_ck_low</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+            <field>
+              <name>run_11_ck_hig</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_POKER_TEST_CK_TH</name>
+          <description>trng_poker_test_ck_th</description>
+          <addressOffset>0x74</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>poker_ck_hig</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>11</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_RPT_TEST_TH</name>
+          <description>trng_rpt_test_th</description>
+          <addressOffset>0x78</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>rpt_cnt_test</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_ADAPT_TEST_TH</name>
+          <description>trng_adapt_test_th</description>
+          <addressOffset>0x7C</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>adapt_low_test</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>10</bitWidth>
+            </field>
+            <field>
+              <name>adapt_hig_test</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>10</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_TOTAL_FAILURE_TEST_CK_TH</name>
+          <description>trng_total_failure_test_ck_th</description>
+          <addressOffset>0x80</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>total_failure_ck_hig</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>11</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_RND_TEST_FAIL_CK_TH</name>
+          <description>trng_rnd_test_fail_ck_th</description>
+          <addressOffset>0x84</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>rnd_fail_ck_cnt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_FIFO_DATA</name>
+          <description>trng_fifo_data</description>
+          <addressOffset>0x100</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>trng_data</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_FIFO_READY</name>
+          <description>trng_fifo_ready</description>
+          <addressOffset>0x104</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>trng_ready</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>trng_done</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_DATA_ST</name>
+          <description>trng_data_st</description>
+          <addressOffset>0x108</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>rng_fifo_real_cnt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>5</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_ALARM</name>
+          <description>trng_alarm</description>
+          <addressOffset>0x110</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>rpt_test_alarm</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>adapt_test_alarm</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>total_failure_test_alarm</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>online_test_alarm</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>rn_chk_alarm</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>crc_alarm</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>prt_alarm</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_ALARM_POST</name>
+          <description>trng_alarm_post</description>
+          <addressOffset>0x114</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>rpt_test_alarm_post</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>adapt_test_alarm_post</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>total_failure_test_alarm_post</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>online_test_alarm_post</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>rn_chk_alarm_post</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>crc_alarm_post</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>prt_alarm_post</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_ALARM_MASK</name>
+          <description>trng_alarm_mask</description>
+          <addressOffset>0x118</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>trng_alarm_mask</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>5</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_ALARM_CLR</name>
+          <description>trng_alarm_clr</description>
+          <addressOffset>0x11C</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>trng_alarm_clr</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_TERO_CNT_SEL</name>
+          <description>trng_tero_cnt_sel</description>
+          <addressOffset>0x160</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>tero_cnt_sel</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_TERO_RING_CNT</name>
+          <description>trng_tero_ring_cnt</description>
+          <addressOffset>0x164</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>tero_ring_cnt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_FRO_FORCE_RST</name>
+          <description>trng_fro_force_rst</description>
+          <addressOffset>0x170</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>fro_force_rst_n</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_FRO_SAMPLE_CLK_SEL</name>
+          <description>trng_fro_sample_clk_sel</description>
+          <addressOffset>0x174</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>fro_sample_clk_sel</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_FRO_DIV_CNT</name>
+          <description>trng_fro_div_cnt</description>
+          <addressOffset>0x178</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>fro_div_cnt</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_FRO_CNT_SEL</name>
+          <description>trng_fro_cnt_sel</description>
+          <addressOffset>0x17C</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>fro_cnt_sel</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>5</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_FRO_RING_CNT</name>
+          <description>trng_fro_ring_cnt</description>
+          <addressOffset>0x180</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>fro_cnt_n</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+            <field>
+              <name>fro_cnt_p</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_FRO_DIV_CLK_CNT</name>
+          <description>trng_fro_div_clk_cnt</description>
+          <addressOffset>0x184</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>TRNG_FRO_CNT_CLK_CNT</name>
+          <description>trng_fro_cnt_clk_cnt</description>
+          <addressOffset>0x188</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>TRNG_REAL_CLOCK_EN</name>
+          <description>trng_real_clock_en</description>
+          <addressOffset>0x1E0</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>low_power_en</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TRNG_VER_NUM</name>
+          <description>trng_ver_num</description>
+          <addressOffset>0x200</addressOffset>
+          <size>0x20</size>
+        </register>
+      </registers>
     </peripheral>
     <peripheral derivedFrom="GPIO0">
       <name>GPIO1</name>
@@ -5952,7 +6369,7 @@
       <baseAddress>0x57036000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0x310</size>
+        <size>0x430</size>
         <usage>registers</usage>
       </addressBlock>
       <interrupt>
@@ -6048,6 +6465,18 @@
           <description>cfg_clk_div_0</description>
           <addressOffset>0xC</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_adc_ana_div_th</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+            <field>
+              <name>cfg_adc_ana_div_cyc</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>CFG_CLK_DIV_1</name>
@@ -6209,12 +6638,28 @@
           <description>rpt_gadc_data_2</description>
           <addressOffset>0x6C</addressOffset>
           <size>0x20</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>sample_data</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>18</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>RPT_GADC_DATA_3</name>
           <description>rpt_gadc_data_3</description>
           <addressOffset>0x70</addressOffset>
           <size>0x20</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>single_sample_done</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>CFG_GADC_DATA_3</name>
@@ -7089,6 +7534,13 @@
           <description>cfg_tst_1</description>
           <addressOffset>0x2F4</addressOffset>
           <size>0x20</size>
+          <fields>
+            <field>
+              <name>diag_node</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+          </fields>
         </register>
         <register>
           <name>CFG_CMP_0</name>
@@ -7113,6 +7565,557 @@
           <description>rpt_cmp_1</description>
           <addressOffset>0x304</addressOffset>
           <size>0x20</size>
+        </register>
+        <register>
+          <name>CFG_RX_SCRATCH</name>
+          <description>cfg_rx_scratch</description>
+          <addressOffset>0x3D0</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>CFG_ANA_0</name>
+          <description>cfg_ana_0</description>
+          <addressOffset>0x3D4</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_topbias_en</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_vrefldo_en_test</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_vrefldo_en_sw</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_vrefldo_en_hiz</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_vrefldo_en_dly</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_vrefldo_en</name>
+              <bitOffset>20</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_clk_rstn</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_ANA_1</name>
+          <description>cfg_ana_1</description>
+          <addressOffset>0x3D8</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_preamp_os_dac_en</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_pga_vcm_en</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_pga_en</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_preamp_vcm_en</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_preamp_en</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_tsensor_en</name>
+              <bitOffset>20</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_bufp_en</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_bufn_en</name>
+              <bitOffset>28</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_ANA_2</name>
+          <description>cfg_ana_2</description>
+          <addressOffset>0x3DC</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_cmp_vin_rdac_code</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+            <field>
+              <name>cfg_cmp_vin_rdac_ref_sel</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>cfg_cmp_en</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_ANA_3</name>
+          <description>cfg_ana_3</description>
+          <addressOffset>0x3E0</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>CFG_ANA_4</name>
+          <description>cfg_ana_4</description>
+          <addressOffset>0x3E4</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_afe_adcldo_en</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_ANA_5</name>
+          <description>cfg_ana_5</description>
+          <addressOffset>0x3E8</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_afe_adcldo_vset</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_adcldo_rpoly_trim</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_adcldo_idummy_trim</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_adcldo_ictr_trim</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_adcldo_en_test</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_adcldo_en_sw</name>
+              <bitOffset>20</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_adcldo_en_hiz</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_adcldo_en_dly</name>
+              <bitOffset>28</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_ANA_6</name>
+          <description>cfg_ana_6</description>
+          <addressOffset>0x3EC</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_afe_afeldo_en</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_ANA_7</name>
+          <description>cfg_ana_7</description>
+          <addressOffset>0x3F0</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_afe_afeldo_vset</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_afeldo_rpoly_trim</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_afeldo_idummy_trim</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_afeldo_ictr_trim</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_afeldo_en_test</name>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_afeldo_en_sw</name>
+              <bitOffset>20</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_afeldo_en_hiz</name>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_afe_afeldo_en_dly</name>
+              <bitOffset>28</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_FREG_0</name>
+          <description>cfg_freg_0</description>
+          <addressOffset>0x3F4</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_vrefldo_ictr_trim</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>cfg_vrefldo_idummy_trim</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>cfg_vrefldo_rpoly_trim</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>cfg_vrefldo_vset_trim</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>cfg_vrefldo_reserved</name>
+              <bitOffset>13</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_FREG_1</name>
+          <description>cfg_freg_1</description>
+          <addressOffset>0x3F8</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>CFG_FREG_2</name>
+          <description>cfg_freg_2</description>
+          <addressOffset>0x3FC</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>CFG_FREG_3</name>
+          <description>cfg_freg_3</description>
+          <addressOffset>0x400</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_preamp_gain_sel</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+            <field>
+              <name>cfg_preamp_bypass_en</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_preamp_rc_en</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_preamp_vip_short</name>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_preamp_vin_short</name>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_FREG_4</name>
+          <description>cfg_freg_4</description>
+          <addressOffset>0x404</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_preamp_vocm_ref_sel</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>cfg_preamp_vicm_ref_sel</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>cfg_preamp_ibias_sel</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_preamp_rz_sel</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_preamp_cc_sel</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_FREG_5</name>
+          <description>cfg_freg_5</description>
+          <addressOffset>0x408</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_pga_gain_sel</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>cfg_pga_chop_mode_sel</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>cfg_pga_bypass_en</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_pga_rc_en</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_FREG_6</name>
+          <description>cfg_freg_6</description>
+          <addressOffset>0x40C</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_pga_vocm_ref_sel</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>cfg_pga_ibias_sel</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>cfg_pga_rz_sel</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>cfg_pga_cc_sel</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_FREG_7</name>
+          <description>cfg_freg_7</description>
+          <addressOffset>0x410</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_idac_sel_pga</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_idac_sel_preamp</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_chopclk_div_dly_sel</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>cfg_chopclk_div_freq_sel</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>cfg_topbias_trim</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>10</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_FREG_8</name>
+          <description>cfg_freg_8</description>
+          <addressOffset>0x414</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>CFG_FREG_9</name>
+          <description>cfg_freg_9</description>
+          <addressOffset>0x418</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>CFG_FREG_10</name>
+          <description>cfg_freg_10</description>
+          <addressOffset>0x41C</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_gadc_short_mode</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_gadc_vcm_mode</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_gadc_dly2inject</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_gadc_dly2convrstn</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>cfg_gadc_dly2convstart</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>cfg_gadc_dly2srwidth</name>
+              <bitOffset>7</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>cfg_gadc_chop_en</name>
+              <bitOffset>9</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>cfg_gadc_chop_freq</name>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_gadc_lsbrpts_en</name>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_gadc_r_sel_fall</name>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CFG_FREG_11</name>
+          <description>cfg_freg_11</description>
+          <addressOffset>0x420</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>cfg_gadc_r_sel_rise</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>cfg_gadc_meta_det_en</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_gadc_meta_det_trim</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>cfg_gadc_os_range_sel</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>cfg_dreg_iso_enb</name>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
         </register>
       </registers>
     </peripheral>
@@ -7455,7 +8458,7 @@
       <baseAddress>0x5208E000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0x30</size>
+        <size>0x90</size>
         <usage>registers</usage>
       </addressBlock>
       <interrupt>
@@ -7774,6 +8777,95 @@
               <name>up_fifo_clr</name>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>UP_FIFO_ST</name>
+          <description>up_fifo_st</description>
+          <addressOffset>0x30</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>up_fifo_full_int</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>up_fifo_afull_int</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>up_fifo_empty_int</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>up_fifo_aempty_int</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>HPF_CTRL0</name>
+          <description>hpf_ctrl channel 0</description>
+          <addressOffset>0x18</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>hpf_bypass_en</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>hpf_fs_sel</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>hpf_adc_dc</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>24</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>HPF_CTRL1</name>
+          <description>hpf_ctrl channel 1</description>
+          <addressOffset>0x1C</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>hpf_bypass_en</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>hpf_fs_sel</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>hpf_adc_dc</name>
+              <bitOffset>8</bitOffset>
+              <bitWidth>24</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>UP_FIFO_DATA</name>
+          <description>UP FIFO 32-bit PCM sample data window</description>
+          <addressOffset>0x80</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <fields>
+            <field>
+              <name>pcm_word</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
             </field>
           </fields>
         </register>
@@ -8169,6 +9261,223 @@
             <field>
               <name>soft_rst</name>
               <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
+      <name>ADC_PMU_AFE</name>
+      <description>ADC PMU AFE power/isolation/reset block</description>
+      <baseAddress>0x57008700</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x40</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>AFE_ADC_RST_N</name>
+          <description>afe_adc_rst_n</description>
+          <addressOffset>0x0</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>afe_adc_rst_n</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>AFE_ADC_LDO_CFG</name>
+          <description>afe_adc_ldo_cfg</description>
+          <addressOffset>0x4</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>s2d_afeldo3_en_dly</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>s2d_afeldo3_en</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>s2d_afeldo2_en_dly</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>s2d_afeldo2_en</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>s2d_afeldo1_en_dly</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>s2d_afeldo1_en</name>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>s2d_afeldo_iso_en_n</name>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>AFE_GADC_CFG</name>
+          <description>afe_gadc_cfg</description>
+          <addressOffset>0x8</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>s2d_gadc_en</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>s2d_gadc_mux_en</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>s2d_gadc_iso_en</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>d2s_gadc_alarm</name>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>d2s_gadc_done</name>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>AFE_GADC_DATA_L</name>
+          <description>afe_gadc_data_l</description>
+          <addressOffset>0xC</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>AFE_GADC_DATA_H</name>
+          <description>afe_gadc_data_h</description>
+          <addressOffset>0x10</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>AFE_HADC_CFG</name>
+          <description>afe_hadc_cfg</description>
+          <addressOffset>0x14</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>AFE_HADC_DATA_L</name>
+          <description>afe_hadc_data_l</description>
+          <addressOffset>0x18</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>AFE_HADC_DATA_H</name>
+          <description>afe_hadc_data_h</description>
+          <addressOffset>0x1C</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>AFE_DIG_PWR_EN</name>
+          <description>afe_dig_pwr_en</description>
+          <addressOffset>0x20</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>afe_pwr_en</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>afe_iso_en</name>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>afe_pwr_ack</name>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>AFE_SOFT_RST</name>
+          <description>afe_soft_rst</description>
+          <addressOffset>0x24</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>afe_soft_rst</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>AFE_CLK_EN</name>
+          <description>afe_clk_en</description>
+          <addressOffset>0x28</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>afe_clk_en</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>AFE_CMP_ALARM_EN</name>
+          <description>afe_cmp_alarm_en</description>
+          <addressOffset>0x2C</addressOffset>
+          <size>0x20</size>
+        </register>
+        <register>
+          <name>AFE_ISO_CFG</name>
+          <description>afe_iso_cfg</description>
+          <addressOffset>0x30</addressOffset>
+          <size>0x20</size>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
+      <name>AON_AFE</name>
+      <description>AON AFE isolation control used by the BS2X ADC porting layer</description>
+      <baseAddress>0x5702C000</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x240</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>AFE_ISO</name>
+          <description>AFE isolation control at 0x5702C230</description>
+          <addressOffset>0x230</addressOffset>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>afe_iso_en</name>
+              <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
           </fields>
@@ -9351,7 +10660,7 @@
               <bitWidth>1</bitWidth>
             </field>
             <field>
-              <name>32KHZSUSPEND</name>
+              <name>F_32KHZSUSPEND</name>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
