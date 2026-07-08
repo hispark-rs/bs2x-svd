@@ -1,9 +1,9 @@
-"""Validate WS63.svd against CMSIS-SVD schema."""
+"""Validate BS2X.svd against CMSIS-SVD schema."""
 import sys, urllib.request, os
 from pathlib import Path
 import xmlschema
 
-SVD = Path(__file__).parent / "WS63.svd"
+SVD = Path(__file__).parent / "BS2X.svd"
 XSD_URL = "https://raw.githubusercontent.com/ARM-software/CMSIS_5/develop/CMSIS/Utilities/CMSIS-SVD.xsd"
 XSD_CACHE = Path("/tmp/CMSIS-SVD.xsd")
 

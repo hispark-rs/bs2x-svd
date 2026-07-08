@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Author BS2X.svd from two truth sources (provenance tool, not run by regen.sh).
 
-1. WS63.svd — the SHARED versioned-IP peripherals (UART v151 / TIMER v150 / GPIO
-   v150 / I2C / SPI / PWM / DMA / RTC / TRNG / WDT / TCXO / GLB_CTL_M). BS21 uses
-   the same silicon (recon-verified), so we reuse those <registers> verbatim and
-   only remap base addresses + instance set + interrupts.
-2. fbb_bs2x SDK HAL headers — the BS2X-SPECIFIC peripherals with no WS63 analogue
-   (GADC 13-bit ADC, KEYSCAN, PDM, QDEC), parsed by derive_bs2x_specific.py.
+1. WS63.svd — the shared versioned-IP peripherals whose register layout has been
+   checked as compatible (UART v151 / TIMER v150 / GPIO v150 / SPI / PWM / DMA /
+   WDT / TCXO / GLB_CTL_M). We reuse those <registers> verbatim and only remap
+   base addresses + instance set + interrupts.
+2. fbb_bs2x SDK HAL headers — BS2X-specific blocks and BS2X variants that are not
+   register-compatible with WS63 (I2C v151, RTC v150, TRNG v1, GADC, KEYSCAN,
+   PDM, QDEC, USB), parsed by derive_bs2x_specific.py.
 
 USB / NFC have no register-block headers in the SDK HAL tree (complex subsystems),
 so their IRQs (USB=89, NFC=69) stay on the GLB_CTL_M catch-all until modeled.
@@ -42,13 +43,9 @@ BASES = [
         ("TIMER_0", 53), ("TIMER_1", 54), ("TIMER_2", 55), ("TIMER_3", 56)]),
     ("WDT", 0x5200_3000, "WDT", []),
     ("TCXO", 0x5700_0200, "TCXO", []),
-    ("I2C0", 0x5208_3000, "I2C0", [("I2C_0", 62)]),
     ("SPI0", 0x5208_7000, "SPI0", [("SPI_M_S_0", 59)]),
     ("PWM", 0x5209_0000, "PWM", [("PWM_0", 71), ("PWM_1", 72)]),
     ("DMA", 0x5207_0000, "DMA", []),
-    ("RTC", 0x5702_4000, "RTC", [
-        ("RTC_0", 49), ("RTC_1", 50), ("RTC_2", 51), ("RTC_3", 52)]),
-    ("TRNG", 0x5200_9000, "TRNG", [("SEC", 70)]),
 ]
 
 DERIVED = [
@@ -85,12 +82,15 @@ def strip_interrupts(periph):
 
 
 def add_interrupts(periph, irqs):
+    regs = periph.find("registers")
+    insert_at = list(periph).index(regs) if regs is not None else len(periph)
     for name, value in irqs:
         it = ET.Element("interrupt")
         ET.SubElement(it, "name").text = name
         ET.SubElement(it, "description").text = f"{name} (IRQ {value})"
         ET.SubElement(it, "value").text = str(value)
-        periph.append(it)
+        periph.insert(insert_at, it)
+        insert_at += 1
 
 
 def main():
@@ -116,6 +116,12 @@ def main():
         add_interrupts(p, [(n, v) for n, v in irqs if v not in owned])
         new_periphs.append(p)
 
+    # BS2X variants that share a peripheral role/name with WS63 but not the
+    # register layout. Keep these before DERIVED so I2C1 can derive from I2C0.
+    shared_variants = bs2x_specific.build_shared_variants()
+    for p in shared_variants:
+        new_periphs.append(p)
+
     for name, base, deriv, irqs in DERIVED:
         p = ET.Element("peripheral")
         p.set("derivedFrom", deriv)
@@ -135,9 +141,10 @@ def main():
     ET.indent(tree, space="  ")
     tree.write(out_path, encoding="utf-8", xml_declaration=True)
 
-    n_p = len(BASES) + len(DERIVED) + len(specific)
+    n_p = len(BASES) + len(shared_variants) + len(DERIVED) + len(specific)
     n_irq = len(new_periphs.findall(".//interrupt"))
-    print(f"BS2X.svd: {n_p} peripherals ({len(specific)} BS2X-specific), "
+    print(f"BS2X.svd: {n_p} peripherals ({len(shared_variants)} BS2X variants, "
+          f"{len(specific)} BS2X-specific), "
           f"{n_irq} interrupts -> {out_path}")
     return 0
 

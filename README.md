@@ -3,12 +3,20 @@
 HiSilicon **BS21 / BS2X**（RISC-V RV32IMFC_Zicsr，BLE 5.4 + SLE/星闪 NearLink）的 CMSIS-SVD 描述，
 是 [`bs2x-pac`](https://github.com/hispark-rs/bs2x-pac)（经 svd2rust 生成）的上游真值。
 
-BS21 与 WS63 同属 HiSilicon **「HimiDeer」riscv31 核**，且 UART/TIMER/GPIO/I2C/SPI/PWM/DMA/RTC/TRNG/WDT/TCXO
-等都是**同一版本化 IP 块**（UART v151、TIMER v150、GPIO v150 —— 已对照 `fbb_bs2x` SDK 逐位核对）。
-因此 `BS2X.svd` **复用 `WS63.svd` 的 `<registers>` 定义**，只改：
+BS21 与 WS63 同属 HiSilicon **「HimiDeer」riscv31 核**，但不是所有同名外设都能安全复用
+WS63 的寄存器块。当前策略是：
+
+- **确认 register-compatible 的共享 IP**（UART/TIMER/GPIO/SPI/PWM/DMA/WDT/TCXO/GLB_CTL_M）
+  复用 `WS63.svd` 的 `<registers>` 定义，只改基址、实例和中断。
+- **同名但布局不同的 BS2X 变体 IP**（I2C v151、RTC v150、TRNG v1）从 `fbb_bs2x`
+  SDK HAL 头生成独立寄存器块。
+- **BS2X 专属外设**（GADC/KEYSCAN/PDM/QDEC/USB 等）同样从 SDK HAL 头生成，并在 SDK
+  helper 透露语义但 typedef 不完整时补手写字段。
+
+因此 `BS2X.svd` 不是整份手写，也不是盲目 derivedFrom WS63；它是“SDK 生成骨架 + 明确手写补丁层”的混合模型。共享 IP 只改：
 
 - **外设基址**（BS21 在 `0x52xx_xxxx`（M_CTL）+ `0x57xx_xxxx`（GLB/PMU/GPIO/RTC）空间，对比 WS63 的 `0x44xx_xxxx`），
-- **外设实例集**（GPIO0-4 + ULP_GPIO、UART0-2、SPI0-2、I2C0-1、DMA+SDMA、TIMER、WDT、TCXO、PWM、RTC、TRNG、GLB_CTL_M），
+- **外设实例集**（GPIO0-4 + ULP_GPIO、UART0-2、SPI0-2、DMA+SDMA、TIMER、WDT、TCXO、PWM、GLB_CTL_M），
 - **中断映射**（`chip_core_irq.h`，`LOCAL_INTERRUPT0 = 26`；mie 类 26-31 + LOCI ≥32）。
 
 ## 内容
@@ -41,9 +49,12 @@ git -C .. diff src/lib.rs   # 审查 diff 后再提交
 
 `BS2X.svd` 由 `tools/build_bs2x_svd.py` 从**两个源**整理（该工具随仓提供作溯源）：
 
-1. **`WS63.svd`** —— 共享版本化 IP 外设（UART/TIMER/GPIO/I2C/SPI/PWM/DMA/RTC/TRNG/WDT/TCXO/GLB_CTL_M）。
-   BS21 同硅片，`<registers>` 原样复用，只改基址 + 实例 + 中断。
-2. **`fbb_bs2x` SDK HAL 头文件** —— **BS2X 专属外设**（WS63 无）：
+1. **`WS63.svd`** —— 共享版本化 IP 外设（UART/TIMER/GPIO/SPI/PWM/DMA/WDT/TCXO/GLB_CTL_M）。
+   `<registers>` 原样复用，只改基址 + 实例 + 中断。
+2. **`fbb_bs2x` SDK HAL 头文件** —— **BS2X 变体/专属外设**：
+   - **I2C v151**（DesignWare-compatible @`0x5208_3000/0x5208_4000`）、**RTC v150**
+    （RTC0 instance @`0x5702_4100`）、**TRNG v1**（@`0x5200_9000`）—— 同名但与
+     WS63 寄存器布局不兼容，不能 derivedFrom WS63。
    - **GADC**（13-bit ADC，v153 @`0x5703_6000`）、**KEYSCAN**（v150 @`0x5208_D000`）、
      **PDM**（v150 @`0x5208_E000`）、**QDEC**（v150 @`0x5200_0200`）——
      由 `tools/derive_bs2x_specific.py` 解析 `hal_<p>_v<NN>_regs_def.h` 的寄存器块 + 位域生成。
@@ -52,11 +63,28 @@ git -C .. diff src/lib.rs   # 审查 diff 后再提交
      `<REG>_<FIELD> ((1)<<(N))` 单比特宏与 `<REG>_<FIELD>_MASK`/`_SHIFT` 多比特对(宽度=掩码移位后的 popcount)
      →**269 个具名位域**。
 
-地址/实例/IRQ 溯源于 `/root/fbb_bs2x`（`platform_core.h` / `chip_core_irq.h` / 各 HAL 头）。
+地址/实例/IRQ 溯源于 `fbb_bs2x`（`platform_core.h` / `chip_core_irq.h` / 各 HAL 头）。
+`tools/derive_bs2x_specific.py` 默认查找 `/root/fbb_bs2x` 和
+`/Users/sanchuan/Documents/hispark/fbb_bs2x`；其他位置可用 `FBB_BS2X_SDK=/path/to/fbb_bs2x`
+指定。
 
-> **GADC 已知缺口**:GADC 的寄存器分 5 个块——已建模数字主块 `adc_regs`(161 寄存器 + 32 位域);
-> 模拟前端 `adc_ana_regs`(AFE trim/校准 @`0x5703_6300`+)、`adc_pmu_regs`、`adc_diag_regs0/1`
-> 在独立 base/offset 上,尚未建模(它们多为校准/诊断配置,非应用主路径),随后补。
+## 要不要整份手写？
+
+暂时不建议。整份手写会把 SDK 的大面积寄存器事实复制进 XML，review 难度和漂移风险都更高。
+现在的维护边界是：
+
+- **脚本负责可机械提取的事实**：寄存器顺序、offset、base address、IRQ、typedef union 位域。
+- **手写补丁只负责机器提取不了的事实**：SDK 头文件 typo、同一 register 的多 view union、helper
+  函数才透露的字段语义、跨 block 的 AFE/PMU/AON 子块。
+- 每次发现 HAL 想绕过 PAC 读写寄存器，优先把缺失事实补到 SVD/生成器，再重新生成 PAC。
+
+如果补丁层继续膨胀，下一步应拆出 `tools/manual_*.py` 或数据化 override 表，而不是改成整份手写
+`BS2X.svd`。
+
+> **GADC 建模范围**:GADC 的数字主块 `adc_regs` 与同基址 ANA 子块 `adc_ana_regs`
+> 已合并到 `GADC` 外设；PMU AFE power/isolation/reset 子块建模为 `ADC_PMU_AFE`
+> (`0x5700_8700`)；AON AFE isolation 位建模为 `AON_AFE.AFE_ISO[10]`
+> (`0x5702_C230`)。诊断块 `adc_diag_regs0/1` 仍推后到实际驱动需要时补。
 
 ## 仍推后
 
